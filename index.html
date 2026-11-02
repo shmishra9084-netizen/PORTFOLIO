@@ -121,6 +121,8 @@
     .modal-bar>div{display:flex;gap:12px}.modal-shell{max-height:95svh;overflow:auto}
     @media(max-width:560px){.gallery-controls{gap:6px;padding:10px;font-size:.7rem}.gallery-controls button{padding:8px}.modal-bar{flex-wrap:wrap}.gallery-badge{left:16px;top:16px}}
     .project-category-filters{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 30px}.project-category-filters[hidden]{display:none}.project-category-filters button{font:inherit;font-size:.75rem;cursor:pointer;background:transparent;color:var(--muted);padding:9px 15px;border:1px solid var(--line);border-radius:30px}.project-category-filters button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}#work .project[hidden]{display:none!important}
+    .project .media.project-preview-media{inset:14px 0 130px}.project-orbit-preview.orbit-stage{height:100%;width:100%;background:none;pointer-events:none;cursor:inherit}.project-orbit-preview .orbit-slide{height:85%;width:59%;border-radius:6px}.project .media .orbit-slide>img{object-fit:contain;transform:none!important}.project-orbit-preview .orbit-slide-caption{font-size:.6rem}.project:after{pointer-events:none}
+    @media(max-width:560px){.project .media.project-preview-media{inset:12px 0 140px}.project-orbit-preview .orbit-slide{height:82%;width:60%}}
   </style>
 </head>
 <body>
@@ -137,7 +139,7 @@
   </nav>
 
   <header class="hero" id="top">
-    <video autoplay muted loop playsinline poster="assets/environment-rain.jpg"><source src="assets/environment-rain.mp4" type="video/mp4"></video>
+    <video autoplay muted loop playsinline poster="assets/projects/environment/rain-night/render-01.jpg"><source src="assets/projects/environment/rain-night/film.mp4" type="video/mp4"></video>
     <div class="wrap hero-content">
       <div class="eyebrow">3D Artist / 3D Generalist</div>
       <h1><span class="hero-line">Worlds with feeling.</span><span class="hero-line">Stories in <em>motion.</em></span></h1>
@@ -166,28 +168,44 @@
         <nav class="project-category-filters" id="workCategoryFilters" aria-label="Filter project galleries" hidden></nav>
         <div class="grid">
           <a class="project small" href="gallery.html?project=project-2">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/product-hero.jpg" alt="Mocha Wood perfume — hero product render"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/mocha-wood/render-01.jpg" alt="Mocha Wood perfume — hero product render"></div>
             <div class="project-copy"><span class="tag">Product Visualization</span><h3>Mocha Wood</h3><p>Luxury product presentation combining material work, lighting, composition and motion.</p></div>
           </a>
           <a class="project half" href="gallery.html?project=project-4">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/forest-study.jpg" alt="Forest Light Study"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/environment/forest/render-01.jpg" alt="Forest Light Study"></div>
             <div class="project-copy"><span class="tag">Environment</span><h3>Forest Light Study</h3><p>Natural environment exploration with foliage framing, depth of field and cinematic movement.</p></div>
           </a>
           <a class="project half" href="gallery.html?project=gameplay-prototype">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/unreal-gameplay.jpg" alt="Unreal gameplay prototype screenshot"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/gameplay/render-01.jpg" alt="Unreal gameplay prototype screenshot"></div>
             <div class="project-copy"><span class="tag">Gameplay</span><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div>
           </a>
           <a class="project large" href="gallery.html?project=project-1">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/alcatraz-cinematic.jpg" alt="The Alcatraz Escape"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/environment/alcatraz/render-01.jpg" alt="The Alcatraz Escape"></div>
             <div class="project-copy"><span class="tag">Cinematic</span><h3>The Alcatraz Escape</h3><p>Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.</p></div>
           </a>
           <a class="project half" href="gallery.html?project=project-3">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/environment-rain.jpg" alt="Rain &amp; Night Study"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/environment/rain-night/render-01.jpg" alt="Rain &amp; Night Study"></div>
             <div class="project-copy"><span class="tag">Environment</span><h3>Rain &amp; Night Study</h3><p>Dark atmospheric environment focused on mood, depth, foliage and lighting.</p></div>
           </a>
           <a class="project small" href="gallery.html?project=project-6">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/unreal-vfx.jpg" alt="Real-Time Scene Tests"></div>
-            <div class="project-copy"><span class="tag">Real-Time / Unreal</span><h3>Real-Time Scene Tests</h3><p>Development experiments exploring real-time environments, effects and interactive workflows.</p></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/unreal-vfx/render-01.jpg" alt="Real-Time Scene Tests"></div>
+            <div class="project-copy"><span class="tag">Real-Time / Unreal</span><h3>Unreal VFX</h3><p>Development experiments exploring real-time environments, effects and interactive workflows.</p></div>
+          </a>
+          <a class="project half" href="gallery.html?project=male-character-01">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/characters/male-01/render-01.png" alt="Male Character 01 — render slot 01"></div>
+            <div class="project-copy"><span class="tag">Characters</span><h3>Male Character 01</h3><p>Reserved gallery for male character 01. Renders will be added here.</p></div>
+          </a>
+          <a class="project half" href="gallery.html?project=male-character-02">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/characters/male-02/render-01.png" alt="Male Character 02 — render slot 01"></div>
+            <div class="project-copy"><span class="tag">Characters</span><h3>Male Character 02</h3><p>Reserved gallery for male character 02. Renders will be added here.</p></div>
+          </a>
+          <a class="project half" href="gallery.html?project=female-character-01">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/characters/female-01/render-01.png" alt="Female Character 01 — render slot 01"></div>
+            <div class="project-copy"><span class="tag">Characters</span><h3>Female Character 01</h3><p>Reserved gallery for female character 01. Renders will be added here.</p></div>
+          </a>
+          <a class="project half" href="gallery.html?project=female-character-02">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/projects/characters/female-02/render-01.png" alt="Female Character 02 — render slot 01"></div>
+            <div class="project-copy"><span class="tag">Characters</span><h3>Female Character 02</h3><p>Reserved gallery for female character 02. Renders will be added here.</p></div>
           </a>
         </div>
       </div>
@@ -213,8 +231,8 @@
       <div class="wrap">
         <div class="section-label"><span>03 / The playground</span><span>Experiments & works in progress</span></div><div class="section-head"><h2>In Development</h2><p>A look behind the final frame. Exploring interaction, effects, and new possibilities in Unreal Engine.</p></div>
         <div class="process-grid">
-          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/unreal-gameplay.jpg"><source src="assets/unreal-gameplay.mp4"></video><div class="process-body"><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div></article>
-          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/unreal-vfx.jpg"><source src="assets/unreal-vfx.mp4"></video><div class="process-body"><h3>Real-Time FX / Environment Test</h3><p>Scene experimentation used to develop stronger real-time visual and technical workflows.</p></div></article>
+          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/projects/gameplay/render-01.jpg"><source src="assets/projects/gameplay/film.mp4"></video><div class="process-body"><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div></article>
+          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/projects/unreal-vfx/render-01.jpg"><source src="assets/projects/unreal-vfx/film.mp4"></video><div class="process-body"><h3>Real-Time FX / Environment Test</h3><p>Scene experimentation used to develop stronger real-time visual and technical workflows.</p></div></article>
         </div>
       </div>
     </section>

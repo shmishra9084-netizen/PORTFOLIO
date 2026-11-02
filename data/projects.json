@@ -7,22 +7,27 @@
       "category": "Product Visualization",
       "description": "Luxury product presentation combining material work, lighting, composition and motion.",
       "layout": "small",
-      "video": "assets/product-film.mp4",
+      "video": "assets/projects/mocha-wood/film.mp4",
       "images": [
         {
-          "src": "assets/product-hero.jpg",
+          "src": "assets/projects/mocha-wood/render-01.jpg",
           "alt": "Mocha Wood perfume — hero product render",
           "label": "Beauty shot"
         },
         {
-          "src": "assets/product-wide.jpg",
+          "src": "assets/projects/mocha-wood/render-02.jpg",
           "alt": "Mocha Wood perfume — wide composition with rocks and flowers",
           "label": "Wide composition"
         },
         {
-          "src": "assets/product-film.jpg",
+          "src": "assets/projects/mocha-wood/render-03.jpg",
           "alt": "Mocha Wood perfume — alternate camera angle",
           "label": "Alternate angle"
+        },
+        {
+          "src": "assets/projects/mocha-wood/render-04.png",
+          "alt": "Mocha Wood — render slot 04",
+          "label": "Render 04"
         }
       ]
     },
@@ -32,12 +37,27 @@
       "category": "Environment",
       "description": "Natural environment exploration with foliage framing, depth of field and cinematic movement.",
       "layout": "half",
-      "video": "assets/forest-study.mp4",
+      "video": "assets/projects/environment/forest/film.mp4",
       "images": [
         {
-          "src": "assets/forest-study.jpg",
+          "src": "assets/projects/environment/forest/render-01.jpg",
           "alt": "Forest Light Study",
           "label": "Beauty shot"
+        },
+        {
+          "src": "assets/projects/environment/forest/render-02.png",
+          "alt": "Forest Light Study — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/environment/forest/render-03.png",
+          "alt": "Forest Light Study — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/environment/forest/render-04.png",
+          "alt": "Forest Light Study — render slot 04",
+          "label": "Render 04"
         }
       ]
     },
@@ -48,12 +68,27 @@
       "description": "Real-time interaction and prototype testing inside Unreal Engine.",
       "software": "Unreal Engine",
       "layout": "half",
-      "video": "assets/unreal-gameplay.mp4",
+      "video": "assets/projects/gameplay/film.mp4",
       "images": [
         {
-          "src": "assets/unreal-gameplay.jpg",
+          "src": "assets/projects/gameplay/render-01.jpg",
           "alt": "Unreal gameplay prototype screenshot",
           "label": "Gameplay preview"
+        },
+        {
+          "src": "assets/projects/gameplay/render-02.png",
+          "alt": "Unreal Gameplay Prototype — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/gameplay/render-03.png",
+          "alt": "Unreal Gameplay Prototype — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/gameplay/render-04.png",
+          "alt": "Unreal Gameplay Prototype — render slot 04",
+          "label": "Render 04"
         }
       ]
     },
@@ -63,12 +98,27 @@
       "category": "Cinematic",
       "description": "Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.",
       "layout": "large",
-      "video": "assets/alcatraz-cinematic.mp4",
+      "video": "assets/projects/environment/alcatraz/film.mp4",
       "images": [
         {
-          "src": "assets/alcatraz-cinematic.jpg",
+          "src": "assets/projects/environment/alcatraz/render-01.jpg",
           "alt": "The Alcatraz Escape",
           "label": "Beauty shot"
+        },
+        {
+          "src": "assets/projects/environment/alcatraz/render-02.png",
+          "alt": "The Alcatraz Escape — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/environment/alcatraz/render-03.png",
+          "alt": "The Alcatraz Escape — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/environment/alcatraz/render-04.png",
+          "alt": "The Alcatraz Escape — render slot 04",
+          "label": "Render 04"
         }
       ]
     },
@@ -78,27 +128,177 @@
       "category": "Environment",
       "description": "Dark atmospheric environment focused on mood, depth, foliage and lighting.",
       "layout": "half",
-      "video": "assets/environment-rain.mp4",
+      "video": "assets/projects/environment/rain-night/film.mp4",
       "images": [
         {
-          "src": "assets/environment-rain.jpg",
+          "src": "assets/projects/environment/rain-night/render-01.jpg",
           "alt": "Rain & Night Study",
           "label": "Beauty shot"
+        },
+        {
+          "src": "assets/projects/environment/rain-night/render-02.png",
+          "alt": "Rain & Night Study — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/environment/rain-night/render-03.png",
+          "alt": "Rain & Night Study — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/environment/rain-night/render-04.png",
+          "alt": "Rain & Night Study — render slot 04",
+          "label": "Render 04"
         }
       ]
     },
     {
       "id": "project-6",
-      "title": "Real-Time Scene Tests",
+      "title": "Unreal VFX",
       "category": "Real-Time / Unreal",
       "description": "Development experiments exploring real-time environments, effects and interactive workflows.",
       "layout": "small",
-      "video": "assets/unreal-vfx.mp4",
+      "video": "assets/projects/unreal-vfx/film.mp4",
       "images": [
         {
-          "src": "assets/unreal-vfx.jpg",
+          "src": "assets/projects/unreal-vfx/render-01.jpg",
           "alt": "Real-Time Scene Tests",
           "label": "Beauty shot"
+        },
+        {
+          "src": "assets/projects/unreal-vfx/render-02.png",
+          "alt": "Real-Time Scene Tests — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/unreal-vfx/render-03.png",
+          "alt": "Real-Time Scene Tests — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/unreal-vfx/render-04.png",
+          "alt": "Real-Time Scene Tests — render slot 04",
+          "label": "Render 04"
+        }
+      ]
+    },
+    {
+      "id": "male-character-01",
+      "title": "Male Character 01",
+      "category": "Characters",
+      "description": "Reserved gallery for male character 01. Renders will be added here.",
+      "layout": "half",
+      "video": "",
+      "images": [
+        {
+          "src": "assets/projects/characters/male-01/render-01.png",
+          "alt": "Male Character 01 — render slot 01",
+          "label": "Render 01"
+        },
+        {
+          "src": "assets/projects/characters/male-01/render-02.png",
+          "alt": "Male Character 01 — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/characters/male-01/render-03.png",
+          "alt": "Male Character 01 — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/characters/male-01/render-04.png",
+          "alt": "Male Character 01 — render slot 04",
+          "label": "Render 04"
+        }
+      ]
+    },
+    {
+      "id": "male-character-02",
+      "title": "Male Character 02",
+      "category": "Characters",
+      "description": "Reserved gallery for male character 02. Renders will be added here.",
+      "layout": "half",
+      "video": "",
+      "images": [
+        {
+          "src": "assets/projects/characters/male-02/render-01.png",
+          "alt": "Male Character 02 — render slot 01",
+          "label": "Render 01"
+        },
+        {
+          "src": "assets/projects/characters/male-02/render-02.png",
+          "alt": "Male Character 02 — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/characters/male-02/render-03.png",
+          "alt": "Male Character 02 — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/characters/male-02/render-04.png",
+          "alt": "Male Character 02 — render slot 04",
+          "label": "Render 04"
+        }
+      ]
+    },
+    {
+      "id": "female-character-01",
+      "title": "Female Character 01",
+      "category": "Characters",
+      "description": "Reserved gallery for female character 01. Renders will be added here.",
+      "layout": "half",
+      "video": "",
+      "images": [
+        {
+          "src": "assets/projects/characters/female-01/render-01.png",
+          "alt": "Female Character 01 — render slot 01",
+          "label": "Render 01"
+        },
+        {
+          "src": "assets/projects/characters/female-01/render-02.png",
+          "alt": "Female Character 01 — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/characters/female-01/render-03.png",
+          "alt": "Female Character 01 — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/characters/female-01/render-04.png",
+          "alt": "Female Character 01 — render slot 04",
+          "label": "Render 04"
+        }
+      ]
+    },
+    {
+      "id": "female-character-02",
+      "title": "Female Character 02",
+      "category": "Characters",
+      "description": "Reserved gallery for female character 02. Renders will be added here.",
+      "layout": "half",
+      "video": "",
+      "images": [
+        {
+          "src": "assets/projects/characters/female-02/render-01.png",
+          "alt": "Female Character 02 — render slot 01",
+          "label": "Render 01"
+        },
+        {
+          "src": "assets/projects/characters/female-02/render-02.png",
+          "alt": "Female Character 02 — render slot 02",
+          "label": "Render 02"
+        },
+        {
+          "src": "assets/projects/characters/female-02/render-03.png",
+          "alt": "Female Character 02 — render slot 03",
+          "label": "Render 03"
+        },
+        {
+          "src": "assets/projects/characters/female-02/render-04.png",
+          "alt": "Female Character 02 — render slot 04",
+          "label": "Render 04"
         }
       ]
     }

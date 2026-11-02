@@ -19,3 +19,10 @@ One-time Supabase setup is required for real login, uploads and publishing:
 see CMS-SETUP.md and supabase/setup.sql. Configure public connection values
 in cms-config.js; never add service-role keys or passwords to the repository.
 Public gallery data falls back to data/projects.json when no CMS is connected.
+
+REPLACE YOUR RENDERS DIRECTLY IN GITHUB
+All project files are organized under assets/projects/. See its README.md.
+Each gallery has four slots, including blank PNGs for missing renders.
+Replace a slot with a real image of the exact same filename/extension and
+commit to main. This updates the animated card and gallery without a CMS.
+Characters have separate male-01, male-02, female-01 and female-02 folders.
