@@ -38,13 +38,56 @@
     @media(max-width:900px){.nav-links a:not(.resume-link){display:none}.project.large,.project.small,.project.half{grid-column:span 12}.project{min-height:360px}.about,.contact-box,.process-grid{grid-template-columns:1fr}.tool-row{grid-template-columns:1fr;gap:5px}.hero-content{padding-bottom:62px}.section-head{align-items:start;flex-direction:column}.contact-right{align-items:flex-start}}
     @media(max-width:560px){.wrap{width:min(calc(100% - 24px),var(--max))}.nav-inner{height:66px}.hero-content{padding-top:140px}.hero-actions{flex-direction:column;align-items:stretch}.btn{width:100%}section{padding:82px 0}.project{min-height:320px}.project-copy{inset:auto 18px 18px}.hero-meta{gap:18px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project .media video,.project .media img{transition:none}}
+
+    /* Cinematic portfolio: generous type, framed imagery, quiet detail. */
+    :root{--bg:#10110f;--panel:#191b17;--muted:#a9ada2;--accent:#d4e6a5;--max:1320px}
+    ::selection{background:var(--accent);color:var(--bg)}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+    section,header{scroll-margin-top:90px}
+    .wrap{width:min(calc(100% - 80px),var(--max))}
+    .nav{background:rgba(16,17,15,.9);border-bottom:1px solid var(--line)}
+    .nav-inner{height:84px}.brand{font-size:1rem;letter-spacing:-.03em}.brand small{display:block;font-size:.59rem;font-weight:400;letter-spacing:.22em;color:var(--muted);margin-top:3px}
+    .nav-links{font-size:.8rem;gap:30px}.resume-link{border-radius:3px;padding:9px 16px}
+    .hero{min-height:850px;height:100svh;max-height:1150px;align-items:center;background:#151b16}
+    .hero>video{opacity:.85;object-position:60% center;filter:saturate(.65)}
+    .hero:after{background:linear-gradient(90deg,rgba(9,14,10,.86),rgba(9,14,10,.45) 55%,rgba(9,14,10,.08)),linear-gradient(0deg,rgba(16,17,15,.92),transparent 35%)}
+    .hero-content{max-width:var(--max);padding:160px 0 140px}.eyebrow{font-size:.68rem;letter-spacing:.2em;color:var(--accent)}
+    h1{font-size:clamp(4rem,7.6vw,7.6rem);font-weight:500;line-height:.99;letter-spacing:-.065em;max-width:960px;margin:30px 0}
+    h1 em{font-family:Georgia,serif;font-weight:400;color:var(--accent);letter-spacing:-.065em}
+    .hero .sub{font-size:1rem;max-width:450px;line-height:1.8;color:#c3c9bd}
+    .hero-actions{margin-top:30px;gap:24px}.btn{border-radius:3px;font-size:.8rem;padding:14px 22px;transition:background .2s,transform .2s}.btn:hover{transform:translateY(-2px);background:#30372a}.btn.primary:hover{background:#e4f4bf}
+    .hero-actions .btn:not(.primary){border:0;background:transparent;padding-inline:0;border-bottom:1px solid #818d75;border-radius:0}
+    .hero-meta{position:absolute;bottom:28px;left:0;right:0;border-top:1px solid rgba(255,255,255,.22);padding-top:20px;justify-content:space-between;font-size:.72rem}.hero-meta b{font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;font-weight:400;color:var(--accent);margin-bottom:7px}
+    .hero-caption{position:absolute;right:40px;top:50%;z-index:2;writing-mode:vertical-rl;font-size:.6rem;letter-spacing:.18em;color:#c3c9bd;text-transform:uppercase}
+    .section-label{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;margin-bottom:42px;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+    .section-label span:first-child{color:var(--accent)}
+    section{padding:100px 0}.section-head{margin-bottom:44px}.section-head h2{font-size:clamp(2.5rem,4.5vw,4.4rem);font-weight:400;letter-spacing:-.055em}.section-head p{max-width:360px;font-size:.9rem;line-height:1.8}
+    .grid{gap:42px 24px}.project{min-height:460px;border:0;border-radius:4px;box-shadow:none;cursor:pointer}.project.half{min-height:400px}
+    .project:after{background:linear-gradient(0deg,rgba(5,8,5,.94),rgba(5,8,5,.18) 45%,transparent 75%)}
+    .project .media img,.project .media video{transition:transform .7s}.project:hover .media img,.project:hover .media video{transform:scale(1.045)}
+    .project-copy{inset:auto 28px 26px}.tag{border:0;border-radius:0;padding:0;background:none;backdrop-filter:none;color:var(--accent);font-size:.6rem;letter-spacing:.15em}.project h3{font-weight:450;font-size:1.85rem;margin-top:9px}.project p{font-size:.8rem;line-height:1.7;max-width:440px}
+    .project-watch{position:absolute;z-index:3;top:22px;right:22px;display:flex;align-items:center;gap:9px;font-size:.65rem;background:rgba(10,15,10,.65);border:1px solid #ffffff40;padding:9px 13px;border-radius:30px;backdrop-filter:blur(12px)}
+    .project:hover .project-watch{background:var(--accent);color:#151b12}
+    #about{background:#dce0d3;color:#20251b}#about .eyebrow{color:#52653b}#about .about h2{font-weight:400;font-size:clamp(3rem,5.7vw,5.6rem);line-height:1.05;margin-top:25px}#about .about-copy{color:#535c4d;font-size:.95rem}#about .about-copy p:first-child{color:#20251b;font-size:1.35rem}#about .tool-row{border-color:#20251b26}#about .tool-row b{color:#20251b;font-size:.8rem}#about .tool-row span{color:#535c4d;font-size:.8rem}
+    .process{background:var(--bg);border:0}.process-card{border-radius:4px;background:transparent}.process-body{padding:24px}.process-body h3{font-weight:450;font-size:1.2rem}.process-body p{font-size:.85rem}
+    .contact{padding-top:0}.contact-box{border-radius:4px;padding:70px 60px;background:var(--accent);color:#202719;border:0}.contact .eyebrow{color:#52653b}.contact .eyebrow:before{background:#52653b}.contact h2{font-weight:400;font-size:clamp(2.6rem,5vw,5rem);margin-top:24px}.contact-right{color:#4a543d;font-size:.85rem}.email{color:#202719;border-bottom-color:#202719;font-size:clamp(1rem,1.6vw,1.3rem);overflow-wrap:anywhere}.contact .btn{border-color:#20271950;background:transparent}.contact .btn:hover{background:#20271910}
+    .modal-shell{border-radius:5px}.close{border-radius:3px}.modal-bar{gap:20px}.modal-bar strong{font-size:.85rem}
+    @media(max-width:900px){.wrap{width:calc(100% - 40px)}.hero{min-height:820px}.hero-content{padding-top:140px}.hero-caption{right:12px}.hero-meta{gap:20px}.project{min-height:440px}.about{gap:35px}.contact-box{padding:40px}.contact-right{gap:20px}}
+    @media(max-width:560px){.nav-inner{height:72px}.nav-links{gap:12px}.nav-links a[href="#work"]{display:block}.nav-links .resume-link{padding:8px 12px}.hero{min-height:850px;max-height:none;height:auto}.hero-content{padding:150px 0 220px}h1{font-size:clamp(3.3rem,14vw,4.8rem)}.hero .sub{font-size:.9rem}.hero-actions{flex-direction:row;align-items:center;gap:18px}.hero-actions .btn{width:auto}.hero-meta{bottom:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.hero-meta div:last-child{grid-column:span 2}.hero-caption{display:none}section{padding:70px 0}.section-label{margin-bottom:28px;font-size:.58rem}.project,.project.half{min-height:380px}.project-copy{inset:auto 20px 20px}.project h3{font-size:1.6rem}.project-watch{top:16px;right:16px}.grid{gap:22px}.contact-box{padding:32px 24px}.tool-row{grid-template-columns:1fr}.modal{padding:12px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    .menu-toggle{display:none;background:transparent;border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:3px;cursor:pointer;font-size:.75rem}
+    .skip-link{position:fixed;top:10px;left:20px;z-index:200;transform:translateY(-160%);background:var(--accent);color:#151b12;padding:12px 18px}.skip-link:focus{transform:translateY(0)}
+    .nav-links a[aria-current="location"]{color:var(--accent)}
+    @media(max-width:900px){.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg);padding:24px 20px;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.nav-links.is-open{display:flex}.nav-links a,.nav-links a:not(.resume-link){display:block;padding:14px 0}.nav-links .resume-link{margin-top:12px;padding:12px;text-align:center}}
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <nav class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="#top">SHIVA<span>.</span></a>
-      <div class="nav-links">
+      <a class="brand" href="#top">SHIVA MISHRA<span>.</span><small>3D ARTIST & GENERALIST</small></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation">Menu +</button>
+      <div class="nav-links" id="navigation">
         <a href="#work">Work</a><a href="#about">About</a><a href="#process">Process</a><a href="#contact">Contact</a>
         <a class="resume-link" href="shiva-mishra-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
       </div>
@@ -55,11 +98,11 @@
     <video autoplay muted loop playsinline poster="assets/environment-rain.jpg"><source src="assets/environment-rain.mp4" type="video/mp4"></video>
     <div class="wrap hero-content">
       <div class="eyebrow">3D Artist / 3D Generalist</div>
-      <h1>Building worlds with mood, light & motion.</h1>
-      <p class="sub">I’m <strong>Shiva Mishra</strong>, a 3D artist working across environments, cinematics, product visualization and real-time 3D with <strong>Blender + Unreal Engine</strong>.</p>
+      <h1>Worlds with feeling.<br>Stories in <em>motion.</em></h1>
+      <p class="sub">I’m <strong>Shiva Mishra</strong>. I craft cinematic environments, thoughtful product visuals, and real-time experiences in <strong>Blender & Unreal Engine</strong>.</p>
       <div class="hero-actions">
-        <a class="btn primary" href="#work">View Selected Work ↓</a>
-        <a class="btn" href="mailto:shmishra9084@gmail.com">Contact Me</a>
+        <a class="btn primary" href="#work">Explore my work ↘</a>
+        <a class="btn" href="mailto:shmishra9084@gmail.com">Let’s talk ↗</a>
       </div>
       <div class="hero-meta">
         <div><b>Focus</b>Games · Film · Cinematics</div>
@@ -67,35 +110,37 @@
         <div><b>Open To</b>3D / Real-Time Opportunities</div>
       </div>
     </div>
+    <span class="hero-caption">Featured environment — Rain & Night Study</span>
   </header>
 
-  <main>
+  <main id="main">
     <section id="work">
       <div class="wrap">
+        <div class="section-label"><span>01 / Selected projects</span><span>Environment · Product · Real-time</span></div>
         <div class="section-head"><h2>Selected Work</h2><p>A focused selection of visual work across cinematic environments, product imagery and real-time experimentation.</p></div>
         <div class="grid">
           <article class="project large" data-video="assets/alcatraz-cinematic.mp4" data-title="The Alcatraz Escape — Cinematic">
-            <div class="media"><video autoplay muted loop playsinline poster="assets/alcatraz-cinematic.jpg"><source src="assets/alcatraz-cinematic.mp4"></video></div>
+            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/alcatraz-cinematic.jpg"><source data-src="assets/alcatraz-cinematic.mp4"></video></div>
             <div class="project-copy"><span class="tag">Cinematic</span><h3>The Alcatraz Escape</h3><p>Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.</p></div>
           </article>
           <article class="project small" data-video="assets/product-film.mp4" data-title="Mocha Wood — Product Visualization">
-            <div class="media"><img src="assets/product-hero.jpg" alt="Mocha Wood perfume product visualization"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/product-hero.jpg" alt="Mocha Wood perfume product visualization"></div>
             <div class="project-copy"><span class="tag">Product Visualization</span><h3>Mocha Wood</h3><p>Luxury product presentation combining material work, lighting, composition and motion.</p></div>
           </article>
           <article class="project half" data-video="assets/environment-rain.mp4" data-title="Rain Environment Study">
-            <div class="media"><video autoplay muted loop playsinline poster="assets/environment-rain.jpg"><source src="assets/environment-rain.mp4"></video></div>
+            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/environment-rain.jpg"><source data-src="assets/environment-rain.mp4"></video></div>
             <div class="project-copy"><span class="tag">Environment</span><h3>Rain & Night Study</h3><p>Dark atmospheric environment focused on mood, depth, foliage and lighting.</p></div>
           </article>
           <article class="project half" data-video="assets/forest-study.mp4" data-title="Forest Environment Study">
-            <div class="media"><video autoplay muted loop playsinline poster="assets/forest-study.jpg"><source src="assets/forest-study.mp4"></video></div>
+            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/forest-study.jpg"><source data-src="assets/forest-study.mp4"></video></div>
             <div class="project-copy"><span class="tag">Environment</span><h3>Forest Light Study</h3><p>Natural environment exploration with foliage framing, depth of field and cinematic movement.</p></div>
           </article>
           <article class="project large" data-video="assets/product-film.mp4" data-title="Product Motion Study">
-            <div class="media"><img src="assets/product-wide.jpg" alt="Perfume product scene with rocks, flowers and atmospheric lighting"></div>
+            <div class="media"><img loading="lazy" decoding="async" src="assets/product-wide.jpg" alt="Perfume product scene with rocks, flowers and atmospheric lighting"></div>
             <div class="project-copy"><span class="tag">Look Development</span><h3>Product Motion Study</h3><p>Stylized commercial staging built around a hero object, nature elements and warm directional light.</p></div>
           </article>
           <article class="project small" data-video="assets/unreal-vfx.mp4" data-title="Real-Time FX / Scene Test">
-            <div class="media"><video autoplay muted loop playsinline poster="assets/unreal-vfx.jpg"><source src="assets/unreal-vfx.mp4"></video></div>
+            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/unreal-vfx.jpg"><source data-src="assets/unreal-vfx.mp4"></video></div>
             <div class="project-copy"><span class="tag">Real-Time / Unreal</span><h3>Real-Time Scene Tests</h3><p>Development experiments exploring real-time environments, effects and interactive workflows.</p></div>
           </article>
         </div>
@@ -104,7 +149,7 @@
 
     <section id="about">
       <div class="wrap about">
-        <div><div class="eyebrow">About</div><h2>Artist first. Generalist by workflow.</h2></div>
+        <div><div class="eyebrow">02 / Behind the work</div><h2>Artist first. Generalist by workflow.</h2></div>
         <div class="about-copy">
           <p>I create 3D work where environment, lighting and presentation do most of the storytelling.</p>
           <p>My workflow spans modeling, texturing, lighting, rendering, animation and cinematic presentation. I’m currently pushing deeper into real-time production in Unreal Engine while continuing to build polished work in Blender.</p>
@@ -120,17 +165,17 @@
 
     <section class="process" id="process">
       <div class="wrap">
-        <div class="section-head"><h2>In Development</h2><p>Process material is kept separate from the polished gallery so recruiters can see both visual quality and ongoing real-time development.</p></div>
+        <div class="section-label"><span>03 / The playground</span><span>Experiments & works in progress</span></div><div class="section-head"><h2>In Development</h2><p>A look behind the final frame. Exploring interaction, effects, and new possibilities in Unreal Engine.</p></div>
         <div class="process-grid">
-          <article class="process-card"><video controls muted playsinline poster="assets/unreal-gameplay.jpg"><source src="assets/unreal-gameplay.mp4"></video><div class="process-body"><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div></article>
-          <article class="process-card"><video controls muted playsinline poster="assets/unreal-vfx.jpg"><source src="assets/unreal-vfx.mp4"></video><div class="process-body"><h3>Real-Time FX / Environment Test</h3><p>Scene experimentation used to develop stronger real-time visual and technical workflows.</p></div></article>
+          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/unreal-gameplay.jpg"><source src="assets/unreal-gameplay.mp4"></video><div class="process-body"><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div></article>
+          <article class="process-card"><video preload="none" controls muted playsinline poster="assets/unreal-vfx.jpg"><source src="assets/unreal-vfx.mp4"></video><div class="process-body"><h3>Real-Time FX / Environment Test</h3><p>Scene experimentation used to develop stronger real-time visual and technical workflows.</p></div></article>
         </div>
       </div>
     </section>
 
     <section class="contact" id="contact">
       <div class="wrap contact-box">
-        <div><div class="eyebrow">Contact</div><h2>Let’s build something worth remembering.</h2></div>
+        <div><div class="eyebrow">04 / Start a conversation</div><h2>Let’s build something worth remembering.</h2></div>
         <div class="contact-right"><span>Open to 3D art, environment, cinematic and real-time opportunities.</span><a class="email" href="mailto:shmishra9084@gmail.com">shmishra9084@gmail.com</a><a class="btn" href="shiva-mishra-resume.pdf" target="_blank" rel="noopener">View Resume ↗</a></div>
       </div>
     </section>
@@ -138,12 +183,36 @@
 
   <footer><div class="wrap footer-inner"><span>© 2026 Shiva Mishra</span><span>3D Artist · 3D Generalist · Unreal Engine</span></div></footer>
 
-  <div class="modal" id="modal" aria-hidden="true"><div class="modal-shell"><video id="modalVideo" controls playsinline></video><div class="modal-bar"><strong id="modalTitle"></strong><button class="close" id="closeModal">Close ✕</button></div></div></div>
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-shell"><video id="modalVideo" controls playsinline></video><div class="modal-bar"><strong id="modalTitle"></strong><button class="close" id="closeModal">Close ✕</button></div></div></div>
   <script>
     const modal=document.getElementById('modal'), mv=document.getElementById('modalVideo'), mt=document.getElementById('modalTitle');
-    document.querySelectorAll('.project[data-video]').forEach(card=>card.addEventListener('click',()=>{mv.src=card.dataset.video;mt.textContent=card.dataset.title;modal.classList.add('open');modal.setAttribute('aria-hidden','false');mv.play().catch(()=>{});}));
-    function closeModal(){mv.pause();mv.removeAttribute('src');mv.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');}
-    document.getElementById('closeModal').addEventListener('click',closeModal); modal.addEventListener('click',e=>{if(e.target===modal) closeModal()}); document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal()});
+    const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeCard;
+    const ambientVideos=[...document.querySelectorAll('video[autoplay], video[data-ambient]')];
+    const visibleVideos=new Set();
+    const videoObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{if(isIntersecting)visibleVideos.add(target);else visibleVideos.delete(target)});syncMotion()},{threshold:.1});
+    ambientVideos.forEach(video=>{video.removeAttribute('autoplay');videoObserver.observe(video)});
+    function syncMotion(){ambientVideos.forEach(video=>{
+      if(reducedMotion.matches||document.hidden||modal.classList.contains('open')||!visibleVideos.has(video)){video.pause();return}
+      const source=video.querySelector('source[data-src]');if(source){source.src=source.dataset.src;source.removeAttribute('data-src');video.load()}
+      video.play().catch(()=>{});
+    })}
+    syncMotion();reducedMotion.addEventListener('change',syncMotion);document.addEventListener('visibilitychange',syncMotion);
+    const menuButton=document.querySelector('.menu-toggle'),navigation=document.getElementById('navigation');
+    function closeMenu(){menuButton.setAttribute('aria-expanded','false');menuButton.textContent='Menu +';navigation.classList.remove('is-open')}
+    menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';menuButton.setAttribute('aria-expanded',String(open));menuButton.textContent=open?'Close −':'Menu +';navigation.classList.toggle('is-open',open)});
+    navigation.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuButton.getAttribute('aria-expanded')==='true'){closeMenu();menuButton.focus()}});
+    document.querySelectorAll('.project[data-video]').forEach(card=>{
+      card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label','Watch '+card.dataset.title);card.setAttribute('aria-haspopup','dialog');
+      const label=document.createElement('span');label.className='project-watch';label.setAttribute('aria-hidden','true');label.textContent='▶ Watch film';card.append(label);
+      function open(){activeCard=card;mv.src=card.dataset.video;mt.textContent=card.dataset.title;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';syncMotion();document.getElementById('closeModal').focus();mv.play().catch(()=>{});}
+      card.addEventListener('click',open);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+    });
+    function closeModal(){mv.pause();mv.removeAttribute('src');mv.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';syncMotion();activeCard?.focus();}
+    document.getElementById('closeModal').addEventListener('click',closeModal);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+    document.addEventListener('keydown',e=>{if(!modal.classList.contains('open'))return;if(e.key==='Escape')closeModal();if(e.key==='Tab'){const targets=[mv,document.getElementById('closeModal')];const first=targets[0],last=targets[1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
   </script>
 </body>
 </html>
