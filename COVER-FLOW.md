@@ -20,7 +20,7 @@ All 10 project galleries have four slots so the 3D animation works before the re
 - Two side previews: scale `.85`, opacity `.7`, z-index `10`, Y rotations `+10deg` and `-10deg`.
 - Standby cards: zero opacity, no keyboard or pointer interaction.
 - Wheel input over the stage, drag/swipe, focused arrow keys, buttons and side clicks navigate within the same project.
-- Autoplay pauses offscreen, when the page is hidden, or on manual interaction. Reduced motion disables transitions and automatic rotation by default.
+- Gallery autoplay pauses offscreen, when the page is hidden, while dragging or while a slide has keyboard focus. It continues under mouse hover; manual actions reset a brief idle delay. Explicit Pause stays paused. Reduced motion disables transitions and automatic rotation by default.
 - One image means one card. Two images repeat the other image at both edges without changing the logical image count.
 
 ## Data and owner editor
@@ -79,3 +79,11 @@ The cover flow sizes each card from the loaded image's actual aspect ratio. Imag
 The in-page viewer can enlarge an image without opening a new tab and switch to that project's film. It has no combined project deck. Slot folders and filenames are unchanged.
 
 Run `node tests/overlay-browser.cjs` for same-page opening/closing, pointer-following slides, bezel-free aspect-ratio fitting, alignment, film/enlargement, focus and scroll restoration, backdrop close, mobile layouts and reduced motion.
+
+## Reference-video motion
+
+Gallery cards exchange centre and side positions with a 900 ms spring-like ease. The incoming side card grows and sharpens; the old centre card shrinks, dims and blurs into the side position. Side cards use a depth-based blur/brightness/saturation adjustment; original render aspect ratios remain intact.
+
+The gallery advances automatically every 2.4 seconds while visible, including when the pointer is over it. Dragging suspends autoplay; releasing or using a manual control resets a 3-second idle delay. Explicit Pause and reduced-motion choices remain respected. Keyboard-focused slides stay still for accessibility. Homepage previews keep their independent hover pause.
+
+`node tests/reference-motion-browser.cjs` verifies depth exchange, spring keyframes, hover autoplay, explicit pause, manual-input recovery and held-drag safety. Optionally set `PORTFOLIO_RECORD_MOTION` to a temporary output directory to record the browser; recording requires Playwright's FFmpeg support. The local test recording was compared with the uploaded reference frames.

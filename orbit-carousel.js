@@ -6,22 +6,22 @@ export class OrbitCarousel {
     root.classList.add('orbit-stage');root.setAttribute('role','region');root.setAttribute('aria-roledescription','carousel');
     this.ring=document.createElement('div');this.ring.className='orbit-ring';root.replaceChildren(this.ring);
     this.resizeObserver=new ResizeObserver(()=>this.layout(false));this.resizeObserver.observe(root);
-    this.pointerDown=event=>{if(!this.interactive||event.button!==0||this.items.length<2||this.transitioning)return;this.onInteract();this.pointer={id:event.pointerId,x:event.clientX,y:event.clientY,dragged:false};};
+    this.pointerDown=event=>{if(!this.interactive||event.button!==0||this.items.length<2||this.transitioning)return;this.pointer={id:event.pointerId,x:event.clientX,y:event.clientY,dragged:false};this.onInteract();};
     this.pointerMove=event=>{
       if(!this.pointer||this.pointer.id!==event.pointerId)return;
       const dx=event.clientX-this.pointer.x,dy=event.clientY-this.pointer.y;
       if(this.pointer.dragged||(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy))){
         if(!this.pointer.dragged){this.pointer.dragged=true;this.cancelAnimations();root.setPointerCapture(event.pointerId);root.classList.add('is-dragging')}
         const progress=Math.max(-.95,Math.min(.95,-dx/(root.clientWidth*.3)));
-        this.cards.forEach((card,slot)=>{const d=this.distance(slot)-progress,abs=Math.abs(d);card.style.transform=this.position(d);card.style.opacity=String(abs<=1?1-abs*.3:Math.max(0,.7*(2-abs)));card.style.zIndex=String(Math.round(30-Math.min(abs,1)*20))});
+        this.cards.forEach((card,slot)=>{const d=this.distance(slot)-progress,abs=Math.abs(d);card.style.transform=this.position(d);card.style.opacity=String(abs<=1?1-abs*.3:Math.max(0,.7*(2-abs)));card.style.filter=this.depthFilter(d);card.style.zIndex=String(Math.round(30-Math.min(abs,1)*20))});
       }
     };
     this.pointerUp=event=>{
       if(!this.pointer||event.pointerId!==this.pointer.id)return;
-      const {x,y,dragged}=this.pointer,dx=event.clientX-x,dy=event.clientY-y;this.pointer=null;root.classList.remove('is-dragging');
+      const {x,y,dragged}=this.pointer,dx=event.clientX-x,dy=event.clientY-y;this.pointer=null;root.classList.remove('is-dragging');this.onInteract();
       if(dragged){this.suppressClick=true;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy))this.step(dx<0?1:-1);else this.layout(true);setTimeout(()=>this.suppressClick=false,0)}
     };
-    this.pointerCancel=()=>{const dragged=this.pointer?.dragged;this.pointer=null;root.classList.remove('is-dragging');if(dragged)this.layout(true)};
+    this.pointerCancel=()=>{const dragged=this.pointer?.dragged;this.pointer=null;root.classList.remove('is-dragging');this.onInteract();if(dragged)this.layout(true)};
     root.addEventListener('pointerdown',this.pointerDown);root.addEventListener('pointermove',this.pointerMove);root.addEventListener('pointerup',this.pointerUp);root.addEventListener('pointercancel',this.pointerCancel);
     this.wheel=event=>{
       if(!this.interactive||event.ctrlKey||this.items.length<2||this.transitioning)return;
@@ -59,20 +59,21 @@ export class OrbitCarousel {
     const abs=Math.abs(distance),direction=Math.sign(distance),fraction=Math.min(abs,1),x=this.root.clientWidth*(abs<=1?abs*.27:.27+(abs-1)*.43)*direction;
     return `translate(-50%,-50%) translateX(${x}px) translateZ(${-fraction*60}px) rotateY(${-direction*fraction*10}deg) scale(${1.08-fraction*.23})`;
   }
+  depthFilter(distance){const depth=Math.min(Math.abs(distance),2);return `blur(${depth*1.8}px) brightness(${1-depth*.18}) saturate(${1-depth*.12})`;}
   cancelAnimations(){this.animations.forEach(animation=>animation.cancel());this.animations=[];}
   layout(animated=true,previousSlot=this.normalizedSlot()){
     if(!this.cards?.length)return;this.sizeCards();
-    const previous=this.cards.map(card=>({transform:getComputedStyle(card).transform,opacity:getComputedStyle(card).opacity}));
+    const previous=this.cards.map(card=>({transform:getComputedStyle(card).transform,opacity:getComputedStyle(card).opacity,filter:getComputedStyle(card).filter}));
     this.cancelAnimations();
     this.cards.forEach((card,slot)=>{
       const distance=this.distance(slot),abs=Math.abs(distance),old=this.distance(slot,previousSlot),transform=this.position(distance),opacity=abs===0?1:abs===1?.7:0;
       const visible=abs<=1,active=distance===0;
       if(visible)card.querySelector('img').loading='eager';
-      card.style.transform=transform;card.style.opacity=opacity;card.style.zIndex=active?'30':'10';card.style.pointerEvents=visible?'auto':'none';
+      card.style.transform=transform;card.style.opacity=opacity;card.style.filter=this.depthFilter(distance);card.style.zIndex=active?'30':'10';card.style.pointerEvents=visible?'auto':'none';
       card.tabIndex=active&&this.interactive?0:-1;card.setAttribute('aria-current',String(active));card.setAttribute('aria-label',(active?'Open ':'Show ')+(this.items[slot%this.items.length].title||`image ${slot%this.items.length+1}`));card.setAttribute('aria-hidden',String(!visible));card.dataset.position=active?'front':distance===-1?'left':distance===1?'right':'standby';
       if(animated&&this.motion()&&card.animate){
-        const frames=Math.abs(old-distance)>this.cards.length/2?[previous[slot],{transform:'translate(-50%,-50%) translateZ(-200px) scale(.7)',opacity:0},{transform,opacity}]:[previous[slot],{transform,opacity}];
-        this.animations.push(card.animate(frames,{duration:720,easing:'cubic-bezier(.22,1,.36,1)'}));
+        const frames=Math.abs(old-distance)>this.cards.length/2?[previous[slot],{transform:'translate(-50%,-50%) translateZ(-240px) scale(.72)',opacity:0,filter:this.depthFilter(2)},{transform,opacity,filter:this.depthFilter(distance)}]:[previous[slot],{transform,opacity,filter:this.depthFilter(distance)}];
+        this.animations.push(card.animate(frames,{duration:900,easing:'cubic-bezier(.2,1.12,.3,1)'}));
       }
     });
   }

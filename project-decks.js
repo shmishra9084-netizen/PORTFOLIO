@@ -2,20 +2,19 @@ import {OrbitCarousel} from './orbit-carousel.js';
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text)el.textContent=text;return el;};
 export class ProjectDecks {
   constructor(root,{motion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches,onOpen=()=>{},prefix='workOrbit',singleProject=false}={}){
-    this.root=root;this.singleProject=singleProject;this.motion=motion;this.onOpen=onOpen;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.hovered=false;this.focused=false;this.grid=false;this.filterRevision=0;
+    this.root=root;this.singleProject=singleProject;this.motion=motion;this.onOpen=onOpen;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.focused=false;this.lastInteraction=0;this.grid=false;this.filterRevision=0;
     root.classList.add('project-decks');if(singleProject)root.classList.add('is-single-gallery');
     root.innerHTML=`<div class="deck-filters"><p class="deck-filter-label">Browse categories</p><div class="deck-tabs" data-categories role="tablist" aria-label="Project categories"></div><p class="deck-filter-label">Choose a project deck</p><div class="deck-tabs deck-project-tabs" data-projects role="tablist" aria-label="Project decks"></div></div><div data-panel role="tabpanel" tabindex="0"><div data-stage aria-label="Project render cover flow"></div><div class="orbit-caption"><div class="deck-render-label" data-label></div><span class="tag" data-category></span><h3 data-title></h3><p data-description></p></div><dl class="deck-meta" data-meta></dl><div class="orbit-navigation"><button type="button" data-prev aria-label="Previous project render">←</button><span class="orbit-count" data-count></span><button type="button" data-next aria-label="Next project render">→</button><button type="button" data-play>Auto-rotate</button><button type="button" data-open>Open project ↗</button></div><p class="orbit-hint">Scroll, drag or swipe · Arrow keys to browse</p></div>`;
     if(singleProject)root.querySelector('.deck-filters').hidden=true;
     this.elements=Object.fromEntries(['categories','projects','panel','stage','label','category','title','description','meta','prev','count','next','play','open'].map(key=>[key,root.querySelector(`[data-${key}]`)]));
     for(const key of ['stage','category','title','description','prev','count','next','play','open'])this.elements[key].id=prefix+key[0].toUpperCase()+key.slice(1);
     this.elements.panel.id=prefix+'Panel';
-    this.carousel=new OrbitCarousel(this.elements.stage,{motion,onChange:i=>this.updateDetails(i),onActivate:(i,card)=>{const item=this.carousel.items[i];if(item)this.onOpen(item.project,card,item.imageIndex)},onInteract:()=>this.pause()});
-    this.elements.prev.addEventListener('click',()=>{this.pause();this.carousel.step(-1)});this.elements.next.addEventListener('click',()=>{this.pause();this.carousel.step(1)});
+    this.carousel=new OrbitCarousel(this.elements.stage,{motion,onChange:i=>this.updateDetails(i),onActivate:(i,card)=>{const item=this.carousel.items[i];if(item)this.onOpen(item.project,card,item.imageIndex)},onInteract:()=>this.interacted()});
+    this.elements.prev.addEventListener('click',()=>{this.interacted();this.carousel.step(-1)});this.elements.next.addEventListener('click',()=>{this.interacted();this.carousel.step(1)});
     this.elements.play.addEventListener('click',()=>{this.wantsPlay=!this.wantsPlay;this.sync()});
     this.elements.open.addEventListener('click',()=>{const item=this.carousel.items[this.carousel.index];if(item)this.onOpen(item.project,this.elements.open,item.imageIndex)});
-    this.elements.stage.addEventListener('pointerenter',()=>{this.hovered=true;this.sync()});this.elements.stage.addEventListener('pointerleave',()=>{this.hovered=false;this.sync()});
-    this.elements.stage.addEventListener('focusin',()=>{this.focused=true;this.sync()});this.elements.stage.addEventListener('focusout',event=>{this.focused=this.elements.stage.contains(event.relatedTarget);this.sync()});
-    this.keydown=event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&this.elements.panel.contains(event.target)){event.preventDefault();this.pause();this.carousel.step(event.key==='ArrowRight'?1:-1)}};this.root.addEventListener('keydown',this.keydown);
+    this.elements.stage.addEventListener('focusin',()=>{this.focused=this.elements.stage.matches(':focus-visible')||Boolean(this.elements.stage.querySelector(':focus-visible'));this.sync()});this.elements.stage.addEventListener('focusout',event=>{this.focused=this.elements.stage.contains(event.relatedTarget)&&Boolean(event.relatedTarget?.matches(':focus-visible'));this.sync()});
+    this.keydown=event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&this.elements.panel.contains(event.target)){event.preventDefault();this.interacted();this.carousel.step(event.key==='ArrowRight'?1:-1)}};this.root.addEventListener('keydown',this.keydown);
     this.observer=new IntersectionObserver(entries=>{this.visible=entries[0].isIntersecting;this.sync()},{threshold:.1});this.observer.observe(root);
     this.visibilityChange=()=>this.sync();document.addEventListener('visibilitychange',this.visibilityChange);
   }
@@ -42,7 +41,7 @@ export class ProjectDecks {
     this.projectTabs();this.wantsPlay=this.motion();return this.switchDeck(false);
   }
   async switchDeck(animated=true){
-    const version=++this.filterRevision;clearInterval(this.timer);this.wantsPlay=animated?false:this.wantsPlay;
+    const version=++this.filterRevision;clearTimeout(this.timer);this.wantsPlay=animated?false:this.wantsPlay;
     const projects=this.filteredProjects().filter(p=>p.id===this.project);
     const items=projects.flatMap(project=>project.images.map((image,imageIndex)=>({...image,title:image.label?`${project.title} — ${image.label}`:`${project.title} · ${imageIndex+1}`,project,imageIndex})));
     this.elements.open.disabled=true;
@@ -64,13 +63,15 @@ export class ProjectDecks {
     this.elements.title.getAnimations().forEach(animation=>animation.cancel());
     if(this.motion())this.elements.title.animate([{opacity:.25,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:300,easing:'cubic-bezier(.25,1,.5,1)'});
   }
+  interacted(){this.lastInteraction=performance.now();this.sync()}
   pause(){this.wantsPlay=false;this.sync()}
   sync(){
-    clearInterval(this.timer);this.timer=null;this.elements.play.textContent=this.wantsPlay?'Pause rotation':'Auto-rotate';
+    clearTimeout(this.timer);this.timer=null;this.elements.play.textContent=this.wantsPlay?'Pause rotation':'Auto-rotate';
     const overlay=document.querySelector('dialog[open],.modal.open');
-    if(this.disposed||!this.wantsPlay||!this.visible||this.hovered||this.focused||this.grid||document.hidden||(overlay&&!overlay.contains(this.root))||this.carousel.transitioning||this.carousel.items.length<2)return;
-    this.timer=setInterval(()=>this.carousel.step(1),4200);
+    if(this.disposed||!this.wantsPlay||!this.visible||this.focused||this.grid||document.hidden||(overlay&&!overlay.contains(this.root))||this.carousel.pointer||this.carousel.transitioning||this.carousel.items.length<2)return;
+    const delay=Math.max(2400,3000-(performance.now()-this.lastInteraction));
+    this.timer=setTimeout(()=>{this.carousel.step(1);this.sync()},delay);
   }
-  destroy(){this.disposed=true;this.filterRevision++;clearInterval(this.timer);this.observer.disconnect();this.carousel.destroy();this.root.removeEventListener('keydown',this.keydown);document.removeEventListener('visibilitychange',this.visibilityChange);this.root.getAnimations({subtree:true}).forEach(animation=>animation.cancel());this.root.replaceChildren()}
+  destroy(){this.disposed=true;this.filterRevision++;clearTimeout(this.timer);this.observer.disconnect();this.carousel.destroy();this.root.removeEventListener('keydown',this.keydown);document.removeEventListener('visibilitychange',this.visibilityChange);this.root.getAnimations({subtree:true}).forEach(animation=>animation.cancel());this.root.replaceChildren()}
   motionChanged(){if(!this.motion()){this.root.getAnimations({subtree:true}).forEach(animation=>animation.cancel());this.pause();this.carousel.cancelAnimations();this.carousel.deckAnimation?.cancel()}this.sync()}
 }

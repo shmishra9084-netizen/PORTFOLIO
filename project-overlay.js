@@ -11,7 +11,7 @@ export function createProjectOverlay({motion,onStateChange=()=>{}}){
   function sync(){deck?.sync();onStateChange(dialog.open)}
   async function open(selected,button){
     if(dialog.open||closing)return;
-    project=selected;trigger=button;previousOverflow=document.body.style.overflow;originalScroll=window.scrollY;
+    project=selected;trigger=button;previousOverflow=document.body.style.overflow;window.scrollTo({top:window.scrollY,left:window.scrollX,behavior:'instant'});originalScroll=window.scrollY;
     document.getElementById('modalTitle').textContent=project.title;document.getElementById('overlayCategory').textContent=project.category;
     film.hidden=true;root.hidden=false;filmButton.hidden=!project.video;filmButton.textContent='Watch film';filmButton.setAttribute('aria-pressed','false');dialog.classList.remove('is-focused');
     dialog.showModal();dialog.classList.add('open');document.body.style.overflow='hidden';
@@ -34,7 +34,7 @@ export function createProjectOverlay({motion,onStateChange=()=>{}}){
     const show=film.hidden;film.hidden=!show;root.hidden=show;filmButton.textContent=show?'View images':'Watch film';filmButton.setAttribute('aria-pressed',String(show));
     if(show){deck.pause();deck.grid=true;video.src=project.video;video.poster=project.images[0].src;video.play().catch(()=>{})}else{video.pause();deck.grid=false;deck.sync()}
   });
-  dialog.addEventListener('keydown',event=>{if(!event.defaultPrevented&&!root.hidden&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();deck.pause();deck.carousel.step(event.key==='ArrowRight'?1:-1)}});
+  dialog.addEventListener('keydown',event=>{if(!event.defaultPrevented&&!root.hidden&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();deck.interacted();deck.carousel.step(event.key==='ArrowRight'?1:-1)}});
   closeButton.addEventListener('click',close);dialog.addEventListener('cancel',event=>{event.preventDefault();close()});dialog.addEventListener('click',event=>{if(event.target===dialog)close()});
   window.addEventListener('portfolio-motion-change',()=>{deck?.motionChanged();if(!motion()){openingAnimation?.cancel();shell.getAnimations().forEach(animation=>animation.cancel())}});
   return {open,close,get isOpen(){return dialog.open}};
