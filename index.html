@@ -93,6 +93,14 @@
       .btn:hover,.btn:active,.project:hover .media img,.project:hover .media video,
       .project:focus-visible .media img,.project:focus-visible .media video{transform:none}
     }
+    .hero-line{display:block}
+    .replay-intro{display:none;background:none;border:0;color:#c3c9bd;font:inherit;font-size:.72rem;cursor:pointer;padding:10px 0;text-decoration:underline;text-underline-offset:5px}
+    .scroll-cue{display:inline-flex;align-items:center;gap:12px;margin-top:28px;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:#c3c9bd}
+    .scroll-track{width:1px;height:34px;overflow:hidden;background:#ffffff30;position:relative}
+    .scroll-track:after{content:"";position:absolute;inset:0;background:var(--accent);transform-origin:top}
+    @keyframes scroll-flow{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+    @media(prefers-reduced-motion:no-preference){.replay-intro.is-ready{display:inline-flex}.scroll-track:after{animation:scroll-flow 2s cubic-bezier(.65,0,.35,1) infinite}}
+    @media(max-width:560px){.hero-actions{row-gap:10px}.replay-intro{flex-basis:100%;text-align:left}.hero-content{padding-bottom:240px}}
   </style>
 </head>
 <body>
@@ -112,12 +120,14 @@
     <video autoplay muted loop playsinline poster="assets/environment-rain.jpg"><source src="assets/environment-rain.mp4" type="video/mp4"></video>
     <div class="wrap hero-content">
       <div class="eyebrow">3D Artist / 3D Generalist</div>
-      <h1>Worlds with feeling.<br>Stories in <em>motion.</em></h1>
+      <h1><span class="hero-line">Worlds with feeling.</span><span class="hero-line">Stories in <em>motion.</em></span></h1>
       <p class="sub">I’m <strong>Shiva Mishra</strong>. I craft cinematic environments, thoughtful product visuals, and real-time experiences in <strong>Blender & Unreal Engine</strong>.</p>
       <div class="hero-actions">
         <a class="btn primary" href="#work">Explore my work ↘</a>
         <a class="btn" href="mailto:shmishra9084@gmail.com">Let’s talk ↗</a>
+        <button class="replay-intro" type="button" aria-label="Replay introduction animation">Replay intro ↻</button>
       </div>
+      <a class="scroll-cue" href="#work"><span class="scroll-track" aria-hidden="true"></span>Scroll to explore</a>
       <div class="hero-meta">
         <div><b>Focus</b>Games · Film · Cinematics</div>
         <div><b>Primary Tools</b>Blender · Unreal Engine</div>
@@ -210,22 +220,31 @@
       animation.finished.then(clean,clean);
       return animation;
     }
-    const entranceFrames=[{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'translateY(0)'}];
-    const entranceOptions={duration:700,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'};
-    document.querySelectorAll('.hero-content > .eyebrow, .hero-content h1, .hero-content .sub, .hero-actions, .hero-meta').forEach((element,index)=>{
-      animate(element,entranceFrames,{...entranceOptions,delay:index*100});
-    });
+    const entranceFrames=[{opacity:0,transform:'translateY(48px)'},{opacity:1,transform:'translateY(0)'}];
+    const entranceOptions={duration:1000,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'};
+    const introElements=[...document.querySelectorAll('.hero-content > .eyebrow, .hero-line, .hero-content .sub, .hero-actions, .scroll-cue, .hero-meta')];
+    function playIntro(){
+      introElements.forEach((element,index)=>{
+        element.getAnimations().forEach(animation=>animation.cancel());
+        const frames=element.matches('.hero-line')?[{opacity:0,transform:'translateY(60px) rotate(2deg)'},{opacity:1,transform:'translateY(0) rotate(0deg)'}]:entranceFrames;
+        animate(element,frames,{...entranceOptions,delay:index*140});
+      });
+    }
+    const replayIntro=document.querySelector('.replay-intro');
+    replayIntro.classList.add('is-ready');replayIntro.addEventListener('click',playIntro);
+    playIntro();
     const revealObserver=new IntersectionObserver(entries=>{
       entries.forEach(({target,isIntersecting})=>{
         if(!isIntersecting)return;
-        animate(target,entranceFrames,{...entranceOptions,delay:Number(target.dataset.revealDelay||0)});
+        const frames=target.matches('.project, .process-card')?[{opacity:0,transform:'translateY(56px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}]:entranceFrames;
+        animate(target,frames,{...entranceOptions,delay:Number(target.dataset.revealDelay||0)});
         revealObserver.unobserve(target);
       });
     },{threshold:.12});
     document.querySelectorAll('.section-label, .section-head, .project, .about > div, .process-card, .contact-box').forEach(element=>{
       if(element.matches('.project, .process-card')){
         const siblings=[...element.parentElement.children];
-        element.dataset.revealDelay=window.innerWidth>900?(siblings.indexOf(element)%2)*120:0;
+        element.dataset.revealDelay=window.innerWidth>900?(siblings.indexOf(element)%2)*180:0;
       }
       revealObserver.observe(element);
     });
