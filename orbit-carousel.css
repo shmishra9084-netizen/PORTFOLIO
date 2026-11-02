@@ -28,3 +28,5 @@
 .deck-meta div{min-width:0}.deck-meta dt{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent,#d4e6a5);margin-bottom:7px}.deck-meta dd{font-size:.8rem;line-height:1.7;color:var(--muted,#b0b7af);margin:0;overflow-wrap:anywhere}
 .deck-render-label{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent,#d4e6a5);margin:0 0 6px}.project-decks .orbit-caption{max-width:860px;min-height:115px;padding-bottom:0}.deck-meta:empty{display:none}.deck-empty{text-align:center;padding:60px 20px;color:var(--muted)}
 @media(max-width:560px){.deck-filters{padding-inline:14px}.deck-tabs button{padding:9px 12px}.deck-meta{grid-template-columns:1fr;gap:14px;margin-top:16px;padding:18px}.project-decks{border-radius:8px}.project-decks .orbit-caption{min-height:130px}}
+.orbit-slide,.orbit-slide[aria-current=true]{border:0;background:transparent;border-radius:6px;max-width:none;box-shadow:0 22px 42px #0005}
+.orbit-slide>img{object-fit:fill}.orbit-slide-caption{display:none}

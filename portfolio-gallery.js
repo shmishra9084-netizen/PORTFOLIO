@@ -1,12 +1,14 @@
+import {createProjectOverlay} from './project-overlay.js';
 import {OrbitCarousel} from './orbit-carousel.js';
 import {loadProjects} from './project-data.js';
 const ui=window.portfolioUI,grid=document.querySelector('#work .grid'),filters=document.getElementById('workCategoryFilters');
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text)el.textContent=text;return el;};
 const previews=new Map();
+const overlay=createProjectOverlay({motion:ui.motionEnabled,onStateChange:()=>{ui.syncMotion();syncPreviews()}});
 function syncPreviews(){
  for(const [card,state] of previews){
   clearInterval(state.timer);state.timer=null;
-  if(!state.visible||state.hovered||state.focused||document.hidden||!ui.motionEnabled())continue;
+  if(overlay.isOpen||!state.visible||state.hovered||state.focused||document.hidden||!ui.motionEnabled())continue;
   state.timer=setInterval(()=>state.carousel.step(1),4200+state.order*90);
  }
 }
@@ -23,10 +25,10 @@ function renderProjects(data){
   const media=make('div','media project-preview-media'),stage=make('div','project-orbit-preview');stage.setAttribute('aria-hidden','true');media.append(stage);
   const carousel=new OrbitCarousel(stage,{items:project.images.map((image,i)=>({...image,title:image.label||`Render ${i+1}`})),motion:ui.motionEnabled,interactive:false});
   const state={carousel,visible:false,hovered:false,focused:false,order,timer:null};previews.set(card,state);previewObserver.observe(card);
+  card.addEventListener('click',event=>{if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||typeof document.getElementById('modal').showModal!=='function')return;event.preventDefault();overlay.open(project,card)});
   card.addEventListener('pointerenter',()=>{state.hovered=true;syncPreviews()});card.addEventListener('pointerleave',()=>{state.hovered=false;syncPreviews()});card.addEventListener('focusin',()=>{state.focused=true;syncPreviews()});card.addEventListener('focusout',()=>{state.focused=false;syncPreviews()});
   const copy=make('div','project-copy');copy.append(make('span','tag',project.category),make('h3','',project.title),make('p','',project.description));
-  card.append(media,copy,make('span','project-watch','Open gallery ↗'));
-  const count=project.images.length;card.append(make('span','gallery-badge',`${count} ${count===1?'image':'images'}${project.video?' · film':''}`));fragment.append(card);ui.revealObserver.observe(card);
+  const count=project.images.length,bar=make('div','project-card-bar');bar.append(make('span','gallery-badge',`${count} ${count===1?'image':'images'}${project.video?' · film':''}`),make('span','project-watch','View gallery +'));card.append(bar,media,copy);fragment.append(card);ui.revealObserver.observe(card);
  });grid.replaceChildren(fragment);
  filters.replaceChildren();filters.hidden=!data.projects.length;
  for(const category of [null,...new Set(data.projects.map(p=>p.category))]){

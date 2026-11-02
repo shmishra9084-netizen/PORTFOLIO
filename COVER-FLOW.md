@@ -1,12 +1,12 @@
 # Independent project galleries
 
-The homepage lists project cover cards. Each card opens an independent page:
+The homepage lists equally aligned project cards. A normal click opens that project in a centered, animated dialog on the same page. Each project also retains an independent shareable URL:
 
 - `gallery.html?project=project-2` — Mocha Wood perfume
 - `gallery.html?project=project-4` — Forest Light Study
 - `gallery.html?project=gameplay-prototype` — Unreal Gameplay Prototype
 
-Each page contains exactly one project's renders, metadata and optional film. Its image carousel loops within that project. It cannot advance into another project's work. Homepage category filters only filter the cover cards; “All projects” lists all cards, never a combined image deck.
+Each dialog or direct page contains exactly one project's renders, metadata and optional film. Its image carousel loops within that project. It cannot advance into another project's work. Homepage category filters only filter the cover cards; “All projects” lists all cards, never a combined image deck.
 
 New projects get a new stable ID and gallery URL when added through the owner editor. Put all angles/renders of the same model inside that project. A different model gets a separate project. The four reserved character galleries and missing render slots use explicitly requested blank PNGs. They contain no invented character artwork or unrelated project images. An unknown URL displays “Project not found.”
 
@@ -69,3 +69,13 @@ Browser checks cover distinct gallery URLs, reloading deep links, image isolatio
 ## Replace render files directly in GitHub
 
 See [the project folder guide](assets/projects/README.md). Every project has its own folder and per-folder README. Existing media is preserved in the new folders; the missing views are blank PNGs. Keep each slot filename/extension and commit your replacement to main. This path does not require the optional Supabase CMS. Run `node tests/render-slots-browser.cjs` to verify all folders, media URLs, character galleries and preview animations.
+
+## Centered viewer and image fitting
+
+The homepage uses `project-overlay.js` and a native `<dialog>`. Card clicks expand into the centered viewer without navigating. Escape, Close and backdrop clicks animate back to the card; focus and scroll position are restored. Background previews and video pause while the dialog is open. Native dialog behavior keeps background controls inert. Modified clicks and no-JavaScript links retain the independent page URL.
+
+The cover flow sizes each card from the loaded image's actual aspect ratio. Image borders, caption strips and black letterbox panels are removed; images remain uncropped. Grid columns use equal widths and consistent preview heights. Dragging updates card transforms continuously, then eases to the next slide or snaps back for short drags.
+
+The in-page viewer can enlarge an image without opening a new tab and switch to that project's film. It has no combined project deck. Slot folders and filenames are unchanged.
+
+Run `node tests/overlay-browser.cjs` for same-page opening/closing, pointer-following slides, bezel-free aspect-ratio fitting, alignment, film/enlargement, focus and scroll restoration, backdrop close, mobile layouts and reduced motion.

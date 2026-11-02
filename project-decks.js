@@ -15,9 +15,9 @@ export class ProjectDecks {
     this.elements.open.addEventListener('click',()=>{const item=this.carousel.items[this.carousel.index];if(item)this.onOpen(item.project,this.elements.open,item.imageIndex)});
     this.elements.stage.addEventListener('pointerenter',()=>{this.hovered=true;this.sync()});this.elements.stage.addEventListener('pointerleave',()=>{this.hovered=false;this.sync()});
     this.elements.stage.addEventListener('focusin',()=>{this.focused=true;this.sync()});this.elements.stage.addEventListener('focusout',event=>{this.focused=this.elements.stage.contains(event.relatedTarget);this.sync()});
-    this.root.addEventListener('keydown',event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&this.elements.panel.contains(event.target)){event.preventDefault();this.pause();this.carousel.step(event.key==='ArrowRight'?1:-1)}});
+    this.keydown=event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&this.elements.panel.contains(event.target)){event.preventDefault();this.pause();this.carousel.step(event.key==='ArrowRight'?1:-1)}};this.root.addEventListener('keydown',this.keydown);
     this.observer=new IntersectionObserver(entries=>{this.visible=entries[0].isIntersecting;this.sync()},{threshold:.1});this.observer.observe(root);
-    document.addEventListener('visibilitychange',()=>this.sync());
+    this.visibilityChange=()=>this.sync();document.addEventListener('visibilitychange',this.visibilityChange);
   }
   tabs(container,entries,selected,choose){
     container.replaceChildren();
@@ -67,8 +67,10 @@ export class ProjectDecks {
   pause(){this.wantsPlay=false;this.sync()}
   sync(){
     clearInterval(this.timer);this.timer=null;this.elements.play.textContent=this.wantsPlay?'Pause rotation':'Auto-rotate';
-    if(!this.wantsPlay||!this.visible||this.hovered||this.focused||this.grid||document.hidden||document.querySelector('.modal.open')||this.carousel.transitioning||this.carousel.items.length<2)return;
+    const overlay=document.querySelector('dialog[open],.modal.open');
+    if(this.disposed||!this.wantsPlay||!this.visible||this.hovered||this.focused||this.grid||document.hidden||(overlay&&!overlay.contains(this.root))||this.carousel.transitioning||this.carousel.items.length<2)return;
     this.timer=setInterval(()=>this.carousel.step(1),4200);
   }
+  destroy(){this.disposed=true;this.filterRevision++;clearInterval(this.timer);this.observer.disconnect();this.carousel.destroy();this.root.removeEventListener('keydown',this.keydown);document.removeEventListener('visibilitychange',this.visibilityChange);this.root.getAnimations({subtree:true}).forEach(animation=>animation.cancel());this.root.replaceChildren()}
   motionChanged(){if(!this.motion()){this.root.getAnimations({subtree:true}).forEach(animation=>animation.cancel());this.pause();this.carousel.cancelAnimations();this.carousel.deckAnimation?.cancel()}this.sync()}
 }

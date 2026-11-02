@@ -1,0 +1,48 @@
+/* Equal project columns and image-led cards, independent of legacy size classes. */
+html{scrollbar-gutter:stable}
+#work .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;align-items:stretch}
+#work .project.large,#work .project.small,#work .project.half{grid-column:auto;min-height:0;display:flex;flex-direction:column;border-radius:12px;background:#ffffff03;border:1px solid #ffffff0c;box-shadow:none;overflow:hidden}
+#work .project:after{display:none}
+#work .project .media.project-preview-media{position:relative;inset:auto;height:clamp(220px,23vw,310px);flex:none}
+#work .project .project-copy{position:static;inset:auto;padding:12px 24px 26px;flex:1;display:flex;flex-direction:column}
+#work .project h3{font-size:clamp(1.5rem,2.5vw,2rem);line-height:1.2;margin:10px 0 12px}
+#work .project p{font-size:.86rem;line-height:1.75;max-width:none}
+.project-card-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px 0;font-size:.7rem}
+#work .project-card-bar .gallery-badge,#work .project-card-bar .project-watch{position:static;inset:auto;border:0;border-radius:0;background:transparent;padding:0;backdrop-filter:none;color:var(--muted);transform:none;pointer-events:none}
+#work .project-card-bar .project-watch{color:var(--accent)}
+#work .project:hover{border-color:#d4e6a535}
+#work .project .project-orbit-preview.orbit-stage{height:100%;background:none}
+#work .project .orbit-slide{border:0!important;background:transparent;box-shadow:0 16px 26px #0005;border-radius:5px;max-width:none}
+#work .project .orbit-slide>img{object-fit:fill;transform:none!important}
+#work .orbit-slide-caption{display:none}
+/* Native dialog keeps the page behind the gallery inert and preserves keyboard focus. */
+dialog.project-dialog{position:fixed;inset:0;margin:auto;width:min(1160px,calc(100vw - 64px));max-width:none;max-height:92svh;padding:0;border:0;border-radius:18px;background:transparent;color:var(--text);overflow:visible;box-shadow:0 32px 120px #0008}
+dialog.project-dialog:not([open]){display:none}
+dialog.project-dialog::backdrop{background:#030605c9;backdrop-filter:blur(12px);animation:gallery-backdrop-in .35s ease-out}
+@keyframes gallery-backdrop-in{from{background:#03060500;backdrop-filter:blur(0)}to{background:#030605c9;backdrop-filter:blur(12px)}}
+html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
+.dialog-shell{background:#131916f5;border:1px solid #ffffff16;border-radius:18px;max-height:92svh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.dialog-header{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:24px 30px 4px}
+.dialog-header h2{font-size:clamp(1.3rem,2.5vw,2rem);font-weight:500;letter-spacing:-.035em;margin:8px 0}
+.dialog-header .eyebrow{font-size:.6rem}.dialog-header .eyebrow:before{display:none}
+.dialog-actions{display:flex;align-items:center;gap:10px;flex:none}
+.dialog-actions button{font:inherit;font-size:.75rem;background:#ffffff05;border:1px solid #ffffff25;border-radius:30px;color:var(--text);padding:10px 15px;cursor:pointer}
+.dialog-actions [hidden],.overlay-film[hidden]{display:none!important}
+#overlayDeck{border:0;background:none;border-radius:0;padding:0 0 14px;overflow:hidden}
+#overlayDeck .deck-filters{display:none}
+#overlayDeck .orbit-stage{height:clamp(240px,43svh,450px);background:none}
+#overlayDeck .orbit-caption{min-height:0;padding:0 28px}
+#overlayDeck .orbit-caption h3,#overlayDeck .orbit-caption>p,#overlayDeck .orbit-caption>.tag{display:none}
+#overlayDeck .deck-render-label{text-align:center;margin:0 0 16px}
+#overlayDeck .deck-meta{padding:18px 24px 0;margin-top:0;max-width:900px}
+#overlayDeck .orbit-navigation{margin:18px 0 0}
+#overlayDeck .orbit-hint{display:none}
+#overlayDeck .orbit-slide{border:0;border-radius:6px;background:transparent;box-shadow:0 24px 42px #0005;max-width:none}
+#overlayDeck .orbit-slide>img{object-fit:fill}
+#overlayDeck .orbit-slide-caption{display:none}
+.dialog-hint{text-align:center;font-size:.65rem;color:var(--muted);margin:8px 24px 22px}
+.overlay-film{padding:24px 30px}.overlay-film video{width:100%;display:block;max-height:65svh;border-radius:7px;background:transparent}
+.project-dialog.is-focused #overlayDeck .deck-meta{display:none}.project-dialog.is-focused #overlayDeck .orbit-stage{height:65svh}
+@media(max-width:900px){#work .grid{grid-template-columns:1fr 1fr;gap:24px}#work .project .media.project-preview-media{height:240px}.project-card-bar{padding:18px 20px 0}#work .project .project-copy{padding:10px 20px 24px}}
+@media(max-width:640px){#work .grid{grid-template-columns:1fr;gap:24px}#work .project .media.project-preview-media{height:260px}dialog.project-dialog{width:calc(100vw - 20px);max-height:94svh;border-radius:12px}.dialog-shell{max-height:94svh;border-radius:12px}.dialog-header{padding:18px 16px 0;align-items:start;gap:12px}.dialog-actions{gap:7px;flex-wrap:wrap;justify-content:end;max-width:170px}.dialog-actions button{padding:9px 11px;font-size:.68rem}#overlayDeck .orbit-stage{height:310px}#overlayDeck .deck-meta{grid-template-columns:1fr;padding:14px 20px 0;gap:12px}#overlayDeck .orbit-navigation{padding:0 12px;gap:7px}#overlayDeck .orbit-navigation button{font-size:.7rem}.dialog-hint{margin:14px 16px 20px;font-size:.58rem}.overlay-film{padding:18px 14px}.project-dialog.is-focused #overlayDeck .orbit-stage{height:56svh}}
+.dialog-header{position:sticky;top:0;z-index:50;background:#131916f5;padding-bottom:10px}

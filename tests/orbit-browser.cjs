@@ -4,7 +4,7 @@ const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000';
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/');await page.waitForFunction(()=>document.querySelectorAll('#work a.project[data-project-id]').length===10);
  if(await page.locator('#work .project-orbit-preview').count()!==10)throw Error('Not every project has an independent animated preview');if(await page.locator('#work a.project button').count())throw Error('Invalid interactive controls inside project links');
- await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#galleryCount').filter({hasText:'1 / 4'}).waitFor();
+ await page.goto(base+'/gallery.html?project=project-2');await page.locator('#galleryCount').filter({hasText:'1 / 4'}).waitFor();
  if(!page.url().endsWith('gallery.html?project=project-2'))throw Error('Mocha does not have a separate page');
  const stage=page.locator('#galleryStage');
  const images=await stage.locator('img').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('src')));if(images.some(src=>!src.startsWith('assets/projects/mocha-wood/')))throw Error('A different project leaked into Mocha');

@@ -26,3 +26,9 @@ Each gallery has four slots, including blank PNGs for missing renders.
 Replace a slot with a real image of the exact same filename/extension and
 commit to main. This updates the animated card and gallery without a CMS.
 Characters have separate male-01, male-02, female-01 and female-02 folders.
+
+GALLERY VIEWER
+Project cards now open centered on the same page with animated transitions.
+Each project keeps its independent images, film and direct gallery URL.
+Images fit their actual aspect ratio without black bezels or cropping.
+Use Escape/Close to return to the same scroll position.

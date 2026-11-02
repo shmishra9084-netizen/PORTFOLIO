@@ -6,6 +6,7 @@
   <meta name="description" content="Shiva Mishra — 3D Artist & 3D Generalist. Environments, cinematics, product visualization and real-time 3D." />
   <title>Shiva Mishra — 3D Artist & 3D Generalist</title>
   <link rel="stylesheet" href="orbit-carousel.css">
+  <link rel="stylesheet" href="portfolio-refinements.css">
   <style>
     :root{
       --bg:#08090b; --panel:#101216; --panel2:#15181d; --text:#f5f6f7; --muted:#9ca4ae;
@@ -247,14 +248,14 @@
 
   <footer><div class="wrap footer-inner"><span>© 2026 Shiva Mishra</span><span>3D Artist · 3D Generalist · Unreal Engine · <a class="studio-link" href="admin.html">Manage work ↗</a></span></div></footer>
 
-  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-shell">
-    <video id="modalVideo" controls playsinline hidden></video>
-    <div class="gallery-view" id="galleryView" hidden><div class="gallery-frame" id="galleryFrame" aria-label="Project images in 3D"></div>
-      <div class="gallery-controls"><button id="galleryPrev" type="button" aria-label="Previous image">← Previous</button><span id="galleryCount"></span><button id="galleryPlay" type="button">Pause slideshow</button><button id="galleryNext" type="button" aria-label="Next image">Next →</button></div>
-      <div id="galleryThumbs" class="gallery-thumbs" aria-label="Project images"></div>
+  <dialog class="project-dialog" id="modal" aria-labelledby="modalTitle">
+    <div class="dialog-shell">
+      <header class="dialog-header"><div><span id="overlayCategory" class="eyebrow"></span><h2 id="modalTitle"></h2></div><div class="dialog-actions"><button id="overlayFilmToggle" type="button" hidden>Watch film</button><button id="closeModal" type="button" aria-label="Close project gallery">Close ✕</button></div></header>
+      <div id="overlayDeck"></div>
+      <div id="overlayFilm" class="overlay-film" hidden><video id="modalVideo" controls playsinline preload="none"></video></div>
+      <p class="dialog-hint">Drag or swipe to explore · Arrow keys to move · Esc to close</p>
     </div>
-    <div class="modal-bar"><strong id="modalTitle"></strong><div><button class="media-switch" id="mediaSwitch" type="button" hidden>Watch film</button><button class="close" id="closeModal" type="button">Close ✕</button></div></div>
-  </div></div>
+  </dialog>
   <script>
     const modal=document.getElementById('modal'), mv=document.getElementById('modalVideo'), mt=document.getElementById('modalTitle');
     const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
