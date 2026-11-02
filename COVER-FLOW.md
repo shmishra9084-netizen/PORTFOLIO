@@ -87,3 +87,11 @@ Gallery cards exchange centre and side positions with a 900 ms spring-like ease.
 The gallery advances automatically every 2.4 seconds while visible, including when the pointer is over it. Dragging suspends autoplay; releasing or using a manual control resets a 3-second idle delay. Explicit Pause and reduced-motion choices remain respected. Keyboard-focused slides stay still for accessibility. Homepage previews keep their independent hover pause.
 
 `node tests/reference-motion-browser.cjs` verifies depth exchange, spring keyframes, hover autoplay, explicit pause, manual-input recovery and held-drag safety. Optionally set `PORTFOLIO_RECORD_MOTION` to a temporary output directory to record the browser; recording requires Playwright's FFmpeg support. The local test recording was compared with the uploaded reference frames.
+
+## Motion controls inside the gallery
+
+When a stored Off preference or system reduced-motion setting disables transitions, the dialog visibly explains that motion is off and provides an **Enable animation** button beside Close. Enabling shows an immediate animated slide and persists the explicit On choice. **Auto-rotate** also enables smooth motion before starting playback, rather than advancing images without transitions. The default reduced-motion preference remains respected until the visitor opts in.
+
+The homepage and direct gallery page share the persisted motion choice. Motion-related entry scripts and dependencies use one version query so a newer controller does not silently load an older cached carousel module.
+
+`node tests/disabled-motion-browser.cjs` recreates the recorded enlarged-gallery view with a saved Off preference, then verifies both enable paths, animated slides, persistence after reload, mobile reduced-motion opt-in, and the versioned module graph.

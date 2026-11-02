@@ -49,3 +49,7 @@ html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
 /* The reference keeps the incoming render sharp while the old centre recedes. */
 #overlayDeck .orbit-stage{background:radial-gradient(ellipse at 50% 65%,#6a58ad12,transparent 68%)}
 #overlayDeck .orbit-slide{box-shadow:0 26px 55px #0006}
+.dialog-actions #overlayMotionToggle[data-enabled="false"]{background:var(--accent);color:#15200f;border-color:var(--accent)}
+.motion-notice{margin:12px 30px 0;padding:12px 16px;border-radius:8px;background:#d4e6a510;color:var(--accent);font-size:.8rem}
+.motion-notice[hidden]{display:none}
+@media(max-width:640px){.motion-notice{margin:12px 16px 0;font-size:.72rem}.dialog-actions{max-width:185px}}

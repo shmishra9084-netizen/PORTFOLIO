@@ -1,0 +1,23 @@
+const {chromium}=require('playwright');
+const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000';
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});let errors=[];
+ const page=await browser.newPage({viewport:{width:1454,height:814}});page.on('pageerror',error=>errors.push(error.message));
+ await page.goto(base+'/');await page.evaluate(()=>localStorage.setItem('portfolio-motion','off'));await page.reload();
+ await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===10);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayCount').filter({hasText:'1 / 4'}).waitFor();
+ await page.getByRole('button',{name:'Enlarge image',exact:true}).click();await page.getByRole('button',{name:'Enable animation',exact:true}).waitFor();await page.locator('#overlayMotionNotice').waitFor();
+ await page.locator('#overlayNext').click();if(await page.locator('#overlayStage .orbit-slide').evaluateAll(cards=>cards.some(card=>card.getAnimations().length)))throw Error('Stored Off was not respected before explicit consent');
+ await page.locator('#overlayPlay').click();
+ await page.waitForFunction(()=>[...document.querySelectorAll('#overlayStage .orbit-slide')].some(card=>card.getAnimations().length));
+ if(await page.evaluate(()=>localStorage.getItem('portfolio-motion'))!=='on')throw Error('Auto-rotate did not enable persisted motion');
+ await page.locator('#overlayMotionToggle').filter({hasText:'Animations: On'}).waitFor();if(await page.locator('#overlayMotionNotice').isVisible())throw Error('Off notice stayed visible');
+ await page.locator('#overlayMotionToggle').click();await page.getByRole('button',{name:'Enable animation',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Enable animation',exact:true}).click();await page.waitForFunction(()=>[...document.querySelectorAll('#overlayStage .orbit-slide')].some(card=>card.getAnimations().length));
+ const enabledIndex=await page.locator('#overlayCount').textContent();await page.waitForFunction(text=>document.getElementById('overlayCount').textContent!==text,enabledIndex,{timeout:5000});
+ await page.keyboard.press('Escape');await page.locator('#modal').waitFor({state:'hidden'});await page.reload();await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===10);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayMotionToggle').filter({hasText:'Animations: On'}).waitFor();await page.getByRole('button',{name:'Enlarge image',exact:true}).click();await page.locator('#overlayNext').click();await page.waitForFunction(()=>[...document.querySelectorAll('#overlayStage .orbit-slide')].some(card=>card.getAnimations().length));
+ const reduced=await browser.newPage({viewport:{width:390,height:640},reducedMotion:'reduce'});reduced.on('pageerror',error=>errors.push(error.message));await reduced.goto(base+'/');await reduced.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===10);await reduced.getByRole('link',{name:'Open Male Character 01 gallery',exact:true}).click();await reduced.getByRole('button',{name:'Enable animation',exact:true}).waitFor();if(await reduced.locator('#overlayPlay').textContent()!=='Auto-rotate')throw Error('Reduced motion automatically enabled');
+ await reduced.locator('#overlayPlay').click();await reduced.waitForFunction(()=>[...document.querySelectorAll('#overlayStage .orbit-slide')].some(card=>card.getAnimations().length));await reduced.locator('#overlayMotionToggle').filter({hasText:'Animations: On'}).waitFor();await reduced.keyboard.press('Escape');await reduced.locator('#modal').waitFor({state:'hidden'});
+ const requests=[];const cache=await browser.newPage();cache.on('request',request=>{if(request.url().includes('.js'))requests.push(request.url())});await cache.goto(base+'/');await cache.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===10);
+ for(const name of ['portfolio-gallery.js','project-overlay.js','project-decks.js','orbit-carousel.js'])if(!requests.some(url=>url.includes('/'+name+'?v=20261102-motion-controls-1')))throw Error('Unversioned motion dependency '+name);
+ if(errors.length)throw Error(errors.join('\n'));console.log('PASS: recording-matched Off/enlarged view, in-gallery Enable button, Auto-rotate enabling real transitions, immediate preview, saved On after reload, reduced-motion opt-in on mobile, consistent versioned module graph.');await browser.close();
+})().catch(error=>{console.error(error);process.exit(1)});

@@ -1,8 +1,8 @@
-import {OrbitCarousel} from './orbit-carousel.js';
+import {OrbitCarousel} from './orbit-carousel.js?v=20261102-motion-controls-1';
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text)el.textContent=text;return el;};
 export class ProjectDecks {
-  constructor(root,{motion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches,onOpen=()=>{},prefix='workOrbit',singleProject=false}={}){
-    this.root=root;this.singleProject=singleProject;this.motion=motion;this.onOpen=onOpen;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.focused=false;this.lastInteraction=0;this.grid=false;this.filterRevision=0;
+  constructor(root,{motion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches,onOpen=()=>{},onEnableMotion=null,prefix='workOrbit',singleProject=false}={}){
+    this.root=root;this.singleProject=singleProject;this.motion=motion;this.onOpen=onOpen;this.onEnableMotion=onEnableMotion;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.focused=false;this.lastInteraction=0;this.grid=false;this.filterRevision=0;
     root.classList.add('project-decks');if(singleProject)root.classList.add('is-single-gallery');
     root.innerHTML=`<div class="deck-filters"><p class="deck-filter-label">Browse categories</p><div class="deck-tabs" data-categories role="tablist" aria-label="Project categories"></div><p class="deck-filter-label">Choose a project deck</p><div class="deck-tabs deck-project-tabs" data-projects role="tablist" aria-label="Project decks"></div></div><div data-panel role="tabpanel" tabindex="0"><div data-stage aria-label="Project render cover flow"></div><div class="orbit-caption"><div class="deck-render-label" data-label></div><span class="tag" data-category></span><h3 data-title></h3><p data-description></p></div><dl class="deck-meta" data-meta></dl><div class="orbit-navigation"><button type="button" data-prev aria-label="Previous project render">←</button><span class="orbit-count" data-count></span><button type="button" data-next aria-label="Next project render">→</button><button type="button" data-play>Auto-rotate</button><button type="button" data-open>Open project ↗</button></div><p class="orbit-hint">Scroll, drag or swipe · Arrow keys to browse</p></div>`;
     if(singleProject)root.querySelector('.deck-filters').hidden=true;
@@ -11,7 +11,7 @@ export class ProjectDecks {
     this.elements.panel.id=prefix+'Panel';
     this.carousel=new OrbitCarousel(this.elements.stage,{motion,onChange:i=>this.updateDetails(i),onActivate:(i,card)=>{const item=this.carousel.items[i];if(item)this.onOpen(item.project,card,item.imageIndex)},onInteract:()=>this.interacted()});
     this.elements.prev.addEventListener('click',()=>{this.interacted();this.carousel.step(-1)});this.elements.next.addEventListener('click',()=>{this.interacted();this.carousel.step(1)});
-    this.elements.play.addEventListener('click',()=>{this.wantsPlay=!this.wantsPlay;this.sync()});
+    this.elements.play.addEventListener('click',()=>{const shouldPlay=!this.wantsPlay;if(shouldPlay&&!this.motion())this.onEnableMotion?.();this.wantsPlay=shouldPlay;this.sync()});
     this.elements.open.addEventListener('click',()=>{const item=this.carousel.items[this.carousel.index];if(item)this.onOpen(item.project,this.elements.open,item.imageIndex)});
     this.elements.stage.addEventListener('focusin',()=>{this.focused=this.elements.stage.matches(':focus-visible')||Boolean(this.elements.stage.querySelector(':focus-visible'));this.sync()});this.elements.stage.addEventListener('focusout',event=>{this.focused=this.elements.stage.contains(event.relatedTarget)&&Boolean(event.relatedTarget?.matches(':focus-visible'));this.sync()});
     this.keydown=event=>{if((event.key==='ArrowRight'||event.key==='ArrowLeft')&&this.elements.panel.contains(event.target)){event.preventDefault();this.interacted();this.carousel.step(event.key==='ArrowRight'?1:-1)}};this.root.addEventListener('keydown',this.keydown);

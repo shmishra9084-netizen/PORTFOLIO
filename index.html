@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Shiva Mishra — 3D Artist & 3D Generalist. Environments, cinematics, product visualization and real-time 3D." />
   <title>Shiva Mishra — 3D Artist & 3D Generalist</title>
-  <link rel="stylesheet" href="orbit-carousel.css">
-  <link rel="stylesheet" href="portfolio-refinements.css">
+  <link rel="stylesheet" href="orbit-carousel.css?v=20261102-motion-controls-1">
+  <link rel="stylesheet" href="portfolio-refinements.css?v=20261102-motion-controls-1">
   <style>
     :root{
       --bg:#08090b; --panel:#101216; --panel2:#15181d; --text:#f5f6f7; --muted:#9ca4ae;
@@ -250,7 +250,8 @@
 
   <dialog class="project-dialog" id="modal" aria-labelledby="modalTitle">
     <div class="dialog-shell">
-      <header class="dialog-header"><div><span id="overlayCategory" class="eyebrow"></span><h2 id="modalTitle"></h2></div><div class="dialog-actions"><button id="overlayFilmToggle" type="button" hidden>Watch film</button><button id="closeModal" type="button" aria-label="Close project gallery">Close ✕</button></div></header>
+      <header class="dialog-header"><div><span id="overlayCategory" class="eyebrow"></span><h2 id="modalTitle"></h2></div><div class="dialog-actions"><button id="overlayMotionToggle" type="button" aria-pressed="false">Enable animation</button><button id="overlayFilmToggle" type="button" hidden>Watch film</button><button id="closeModal" type="button" aria-label="Close project gallery">Close ✕</button></div></header>
+      <p id="overlayMotionNotice" class="motion-notice" role="status" hidden>Smooth animation is off for this browser. Choose “Enable animation” or “Auto-rotate” to turn it on.</p>
       <div id="overlayDeck"></div>
       <div id="overlayFilm" class="overlay-film" hidden><video id="modalVideo" controls playsinline preload="none"></video></div>
       <p class="dialog-hint">Drag or swipe to explore · Arrow keys to move · Esc to close</p>
@@ -312,11 +313,12 @@
       syncMotion();window.dispatchEvent(new Event('portfolio-motion-change'));
     }
     reducedMotion.addEventListener('change',applyMotionPreference);
-    motionToggle.addEventListener('click',()=>{
-      motionPreference=motionEnabled()?'off':'on';
-      try{localStorage.setItem('portfolio-motion',motionPreference)}catch{}
-      applyMotionPreference();if(motionEnabled())playIntro();
-    });
+    function setMotionPreference(preference){
+      if(!['on','off','system'].includes(preference))return;
+      motionPreference=preference;try{localStorage.setItem('portfolio-motion',preference)}catch{}
+      applyMotionPreference();
+    }
+    motionToggle.addEventListener('click',()=>{setMotionPreference(motionEnabled()?'off':'on');if(motionEnabled())playIntro()});
     const ambientVideos=[...document.querySelectorAll('video[autoplay], video[data-ambient]')];
     const visibleVideos=new Set();
     const videoObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{if(isIntersecting)visibleVideos.add(target);else visibleVideos.delete(target)});syncMotion()},{threshold:.1});
@@ -332,8 +334,8 @@
     menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';menuButton.setAttribute('aria-expanded',String(open));menuButton.textContent=open?'Close −':'Menu +';navigation.classList.toggle('is-open',open)});
     navigation.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuButton.getAttribute('aria-expanded')==='true'){closeMenu();menuButton.focus()}});
-    window.portfolioUI={animate,motionEnabled,syncMotion,revealObserver,videoObserver,ambientVideos,visibleVideos};
+    window.portfolioUI={animate,motionEnabled,setMotionPreference,syncMotion,revealObserver,videoObserver,ambientVideos,visibleVideos};
   </script>
-  <script type="module" src="portfolio-gallery.js"></script>
+  <script type="module" src="portfolio-gallery.js?v=20261102-motion-controls-1"></script>
 </body>
 </html>

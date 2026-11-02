@@ -1,10 +1,10 @@
-import {createProjectOverlay} from './project-overlay.js';
-import {OrbitCarousel} from './orbit-carousel.js';
+import {createProjectOverlay} from './project-overlay.js?v=20261102-motion-controls-1';
+import {OrbitCarousel} from './orbit-carousel.js?v=20261102-motion-controls-1';
 import {loadProjects} from './project-data.js';
 const ui=window.portfolioUI,grid=document.querySelector('#work .grid'),filters=document.getElementById('workCategoryFilters');
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text)el.textContent=text;return el;};
 const previews=new Map();
-const overlay=createProjectOverlay({motion:ui.motionEnabled,onStateChange:()=>{ui.syncMotion();syncPreviews()}});
+const overlay=createProjectOverlay({motion:ui.motionEnabled,setMotion:ui.setMotionPreference,onStateChange:()=>{ui.syncMotion();syncPreviews()}});
 function syncPreviews(){
  for(const [card,state] of previews){
   clearInterval(state.timer);state.timer=null;

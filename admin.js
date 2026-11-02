@@ -1,4 +1,4 @@
-import {OrbitCarousel} from './orbit-carousel.js';
+import {OrbitCarousel} from './orbit-carousel.js?v=20261102-motion-controls-1';
 import {CMSClient,configured} from './cms-client.js';
 import {validateDocument} from './project-store.js';
 const $=id=>document.getElementById(id), client=new CMSClient();

@@ -1,11 +1,12 @@
 import {loadProjects} from './project-data.js';
-import {ProjectDecks} from './project-decks.js';
+import {ProjectDecks} from './project-decks.js?v=20261102-motion-controls-1';
 const $=id=>document.getElementById(id),motion=matchMedia('(prefers-reduced-motion: reduce)');
 let gallery,preference='system';
 try{const saved=localStorage.getItem('portfolio-motion');if(saved==='on'||saved==='off')preference=saved}catch{}
 function motionEnabled(){return preference==='on'||(preference!=='off'&&!motion.matches)}
 function updateMotion(){const enabled=motionEnabled();$('galleryMotion').textContent='Animations: '+(enabled?'On':'Off');$('galleryMotion').setAttribute('aria-pressed',String(enabled));gallery?.motionChanged()}
-$('galleryMotion').addEventListener('click',()=>{preference=motionEnabled()?'off':'on';try{localStorage.setItem('portfolio-motion',preference)}catch{}updateMotion();if(motionEnabled()&&gallery){gallery.wantsPlay=true;gallery.sync()}});
+function enableMotion(){preference='on';try{localStorage.setItem('portfolio-motion','on')}catch{}updateMotion();if(gallery){gallery.wantsPlay=true;gallery.carousel.step(1);gallery.sync()}}
+$('galleryMotion').addEventListener('click',()=>{if(!motionEnabled())enableMotion();else{preference='off';try{localStorage.setItem('portfolio-motion','off')}catch{}updateMotion()}});
 (async()=>{
  try{
   const id=new URLSearchParams(location.search).get('project');
@@ -13,7 +14,7 @@ $('galleryMotion').addEventListener('click',()=>{preference=motionEnabled()?'off
   if(!project){$('project-title').textContent='Project not found';$('project-status').textContent='This project has not been uploaded, or its link is no longer available. Choose an existing project from the galleries page.';return}
   document.title=project.title+' — Shiva Mishra';$('project-title').textContent=project.title;$('project-category').textContent=project.category;$('project-description').textContent=project.description;
   $('project-gallery').hidden=false;
-  gallery=new ProjectDecks($('project-gallery'),{prefix:'gallery',singleProject:true,motion:motionEnabled,onOpen:(selected,button,imageIndex)=>{window.open(selected.images[imageIndex].src,'_blank','noopener')}});
+  gallery=new ProjectDecks($('project-gallery'),{prefix:'gallery',singleProject:true,motion:motionEnabled,onEnableMotion:enableMotion,onOpen:(selected,button,imageIndex)=>{window.open(selected.images[imageIndex].src,'_blank','noopener')}});
   await gallery.setProjects([project]);gallery.elements.open.textContent='View full image ↗';$('project-status').hidden=true;
   if(project.video){$('project-film').hidden=false;$('project-film-title').textContent=project.title;$('project-video').src=project.video;$('project-video').poster=project.images[0].src}
   $('galleryMotion').hidden=false;updateMotion();motion.addEventListener('change',updateMotion);
