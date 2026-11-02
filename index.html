@@ -79,6 +79,20 @@
     .skip-link{position:fixed;top:10px;left:20px;z-index:200;transform:translateY(-160%);background:var(--accent);color:#151b12;padding:12px 18px}.skip-link:focus{transform:translateY(0)}
     .nav-links a[aria-current="location"]{color:var(--accent)}
     @media(max-width:900px){.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg);padding:24px 20px;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.nav-links.is-open{display:flex}.nav-links a,.nav-links a:not(.resume-link){display:block;padding:14px 0}.nav-links .resume-link{margin-top:12px;padding:12px;text-align:center}}
+    /* Motion uses only opacity and transforms; content remains visible without JavaScript. */
+    .project-watch{transition:background .25s,color .25s,transform .25s}
+    .project:focus-visible .project-watch{background:var(--accent);color:#151b12}
+    .project:focus-visible .media img,.project:focus-visible .media video{transform:scale(1.045)}
+    .btn:active{transform:translateY(0) scale(.98)}
+    @media(hover:hover) and (prefers-reduced-motion:no-preference){
+      .project:hover .project-watch{transform:translateY(-3px)}
+      .resume-link{transition:background .2s,border-color .2s}
+      .resume-link:hover{background:#d4e6a51a;border-color:var(--accent)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .btn:hover,.btn:active,.project:hover .media img,.project:hover .media video,
+      .project:focus-visible .media img,.project:focus-visible .media video{transform:none}
+    }
   </style>
 </head>
 <body>
@@ -187,7 +201,38 @@
   <script>
     const modal=document.getElementById('modal'), mv=document.getElementById('modalVideo'), mt=document.getElementById('modalTitle');
     const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
-    let activeCard;
+    const runningAnimations=new Set();
+    function animate(element,frames,options){
+      if(reducedMotion.matches||!element.animate)return null;
+      const animation=element.animate(frames,options);
+      runningAnimations.add(animation);
+      const clean=()=>runningAnimations.delete(animation);
+      animation.finished.then(clean,clean);
+      return animation;
+    }
+    const entranceFrames=[{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'translateY(0)'}];
+    const entranceOptions={duration:700,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'};
+    document.querySelectorAll('.hero-content > .eyebrow, .hero-content h1, .hero-content .sub, .hero-actions, .hero-meta').forEach((element,index)=>{
+      animate(element,entranceFrames,{...entranceOptions,delay:index*100});
+    });
+    const revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(({target,isIntersecting})=>{
+        if(!isIntersecting)return;
+        animate(target,entranceFrames,{...entranceOptions,delay:Number(target.dataset.revealDelay||0)});
+        revealObserver.unobserve(target);
+      });
+    },{threshold:.12});
+    document.querySelectorAll('.section-label, .section-head, .project, .about > div, .process-card, .contact-box').forEach(element=>{
+      if(element.matches('.project, .process-card')){
+        const siblings=[...element.parentElement.children];
+        element.dataset.revealDelay=window.innerWidth>900?(siblings.indexOf(element)%2)*120:0;
+      }
+      revealObserver.observe(element);
+    });
+    reducedMotion.addEventListener('change',()=>{
+      if(reducedMotion.matches){runningAnimations.forEach(animation=>animation.cancel());revealObserver.disconnect()}
+    });
+    let activeCard,closingModal=false;
     const ambientVideos=[...document.querySelectorAll('video[autoplay], video[data-ambient]')];
     const visibleVideos=new Set();
     const videoObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{if(isIntersecting)visibleVideos.add(target);else visibleVideos.delete(target)});syncMotion()},{threshold:.1});
@@ -206,10 +251,21 @@
     document.querySelectorAll('.project[data-video]').forEach(card=>{
       card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label','Watch '+card.dataset.title);card.setAttribute('aria-haspopup','dialog');
       const label=document.createElement('span');label.className='project-watch';label.setAttribute('aria-hidden','true');label.textContent='▶ Watch film';card.append(label);
-      function open(){activeCard=card;mv.src=card.dataset.video;mt.textContent=card.dataset.title;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';syncMotion();document.getElementById('closeModal').focus();mv.play().catch(()=>{});}
+      function open(){if(closingModal||modal.classList.contains('open'))return;activeCard=card;mv.src=card.dataset.video;mt.textContent=card.dataset.title;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';animate(modal,[{opacity:0},{opacity:1}],{duration:220,easing:'ease-out'});animate(modal.querySelector('.modal-shell'),[{opacity:0,transform:'translateY(20px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.7,.2,1)'});syncMotion();document.getElementById('closeModal').focus();mv.play().catch(()=>{});}
       card.addEventListener('click',open);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
     });
-    function closeModal(){mv.pause();mv.removeAttribute('src');mv.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';syncMotion();activeCard?.focus();}
+    async function closeModal(){
+      if(closingModal||!modal.classList.contains('open'))return;
+      closingModal=true;mv.pause();
+      // Cancel an unfinished opening transition before starting the exit.
+      modal.getAnimations({subtree:true}).forEach(animation=>animation.cancel());
+      const exit=animate(modal,[{opacity:1},{opacity:0}],{duration:180,easing:'ease-in',fill:'forwards'});
+      animate(modal.querySelector('.modal-shell'),[{transform:'scale(1)'},{transform:'scale(.98)'}],{duration:180,easing:'ease-in'});
+      if(exit)await exit.finished.catch(()=>{});
+      mv.removeAttribute('src');mv.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+      modal.getAnimations({subtree:true}).forEach(animation=>animation.cancel());
+      document.body.style.overflow='';closingModal=false;syncMotion();activeCard?.focus();
+    }
     document.getElementById('closeModal').addEventListener('click',closeModal);
     modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
     document.addEventListener('keydown',e=>{if(!modal.classList.contains('open'))return;if(e.key==='Escape')closeModal();if(e.key==='Tab'){const targets=[mv,document.getElementById('closeModal')];const first=targets[0],last=targets[1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
