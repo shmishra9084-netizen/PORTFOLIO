@@ -120,6 +120,7 @@
     .project-watch{pointer-events:none}.studio-link{color:var(--accent)}
     .modal-bar>div{display:flex;gap:12px}.modal-shell{max-height:95svh;overflow:auto}
     @media(max-width:560px){.gallery-controls{gap:6px;padding:10px;font-size:.7rem}.gallery-controls button{padding:8px}.modal-bar{flex-wrap:wrap}.gallery-badge{left:16px;top:16px}}
+    .project-category-filters{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 30px}.project-category-filters[hidden]{display:none}.project-category-filters button{font:inherit;font-size:.75rem;cursor:pointer;background:transparent;color:var(--muted);padding:9px 15px;border:1px solid var(--line);border-radius:30px}.project-category-filters button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}#work .project[hidden]{display:none!important}
   </style>
 </head>
 <body>
@@ -161,34 +162,33 @@
     <section id="work">
       <div class="wrap">
         <div class="section-label"><span>01 / Selected projects</span><span>Environment · Product · Real-time</span></div>
-        <div class="section-head"><h2>Selected Work</h2><p>A focused selection of visual work across cinematic environments, product imagery and real-time experimentation.</p></div>
-        <div class="orbit-toolbar" id="workViewControls" hidden><div class="orbit-view-buttons"><button id="workOrbitView" type="button" aria-pressed="true">3D carousel</button><button id="workGridView" type="button" aria-pressed="false">All projects</button></div><span class="orbit-hint">Project decks · Scroll, drag or swipe</span></div>
-        <div id="workOrbit" hidden></div>
+        <div class="section-head"><h2>Project Galleries</h2><p>Every project has its own gallery. Choose a project to explore its images, details and film.</p></div>
+        <nav class="project-category-filters" id="workCategoryFilters" aria-label="Filter project galleries" hidden></nav>
         <div class="grid">
-          <article class="project large" data-video="assets/alcatraz-cinematic.mp4" data-title="The Alcatraz Escape — Cinematic">
-            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/alcatraz-cinematic.jpg"><source data-src="assets/alcatraz-cinematic.mp4"></video></div>
-            <div class="project-copy"><span class="tag">Cinematic</span><h3>The Alcatraz Escape</h3><p>Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.</p></div>
-          </article>
-          <article class="project small" data-video="assets/product-film.mp4" data-title="Mocha Wood — Product Visualization">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/product-hero.jpg" alt="Mocha Wood perfume product visualization"></div>
+          <a class="project small" href="gallery.html?project=project-2">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/product-hero.jpg" alt="Mocha Wood perfume — hero product render"></div>
             <div class="project-copy"><span class="tag">Product Visualization</span><h3>Mocha Wood</h3><p>Luxury product presentation combining material work, lighting, composition and motion.</p></div>
-          </article>
-          <article class="project half" data-video="assets/environment-rain.mp4" data-title="Rain Environment Study">
-            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/environment-rain.jpg"><source data-src="assets/environment-rain.mp4"></video></div>
-            <div class="project-copy"><span class="tag">Environment</span><h3>Rain & Night Study</h3><p>Dark atmospheric environment focused on mood, depth, foliage and lighting.</p></div>
-          </article>
-          <article class="project half" data-video="assets/forest-study.mp4" data-title="Forest Environment Study">
-            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/forest-study.jpg"><source data-src="assets/forest-study.mp4"></video></div>
+          </a>
+          <a class="project half" href="gallery.html?project=project-4">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/forest-study.jpg" alt="Forest Light Study"></div>
             <div class="project-copy"><span class="tag">Environment</span><h3>Forest Light Study</h3><p>Natural environment exploration with foliage framing, depth of field and cinematic movement.</p></div>
-          </article>
-          <article class="project large" data-video="assets/product-film.mp4" data-title="Product Motion Study">
-            <div class="media"><img loading="lazy" decoding="async" src="assets/product-wide.jpg" alt="Perfume product scene with rocks, flowers and atmospheric lighting"></div>
-            <div class="project-copy"><span class="tag">Look Development</span><h3>Product Motion Study</h3><p>Stylized commercial staging built around a hero object, nature elements and warm directional light.</p></div>
-          </article>
-          <article class="project small" data-video="assets/unreal-vfx.mp4" data-title="Real-Time FX / Scene Test">
-            <div class="media"><video data-ambient preload="none" muted loop playsinline poster="assets/unreal-vfx.jpg"><source data-src="assets/unreal-vfx.mp4"></video></div>
+          </a>
+          <a class="project half" href="gallery.html?project=gameplay-prototype">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/unreal-gameplay.jpg" alt="Unreal gameplay prototype screenshot"></div>
+            <div class="project-copy"><span class="tag">Gameplay</span><h3>Unreal Gameplay Prototype</h3><p>Real-time interaction and prototype testing inside Unreal Engine.</p></div>
+          </a>
+          <a class="project large" href="gallery.html?project=project-1">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/alcatraz-cinematic.jpg" alt="The Alcatraz Escape"></div>
+            <div class="project-copy"><span class="tag">Cinematic</span><h3>The Alcatraz Escape</h3><p>Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.</p></div>
+          </a>
+          <a class="project half" href="gallery.html?project=project-3">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/environment-rain.jpg" alt="Rain &amp; Night Study"></div>
+            <div class="project-copy"><span class="tag">Environment</span><h3>Rain &amp; Night Study</h3><p>Dark atmospheric environment focused on mood, depth, foliage and lighting.</p></div>
+          </a>
+          <a class="project small" href="gallery.html?project=project-6">
+            <div class="media"><img loading="lazy" decoding="async" src="assets/unreal-vfx.jpg" alt="Real-Time Scene Tests"></div>
             <div class="project-copy"><span class="tag">Real-Time / Unreal</span><h3>Real-Time Scene Tests</h3><p>Development experiments exploring real-time environments, effects and interactive workflows.</p></div>
-          </article>
+          </a>
         </div>
       </div>
     </section>

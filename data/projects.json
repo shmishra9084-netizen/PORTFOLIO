@@ -2,21 +2,6 @@
   "version": 1,
   "projects": [
     {
-      "id": "project-1",
-      "title": "The Alcatraz Escape",
-      "category": "Cinematic",
-      "description": "Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.",
-      "layout": "large",
-      "video": "assets/alcatraz-cinematic.mp4",
-      "images": [
-        {
-          "src": "assets/alcatraz-cinematic.jpg",
-          "alt": "The Alcatraz Escape",
-          "label": "Beauty shot"
-        }
-      ]
-    },
-    {
       "id": "project-2",
       "title": "Mocha Wood",
       "category": "Product Visualization",
@@ -42,21 +27,6 @@
       ]
     },
     {
-      "id": "project-3",
-      "title": "Rain & Night Study",
-      "category": "Environment",
-      "description": "Dark atmospheric environment focused on mood, depth, foliage and lighting.",
-      "layout": "half",
-      "video": "assets/environment-rain.mp4",
-      "images": [
-        {
-          "src": "assets/environment-rain.jpg",
-          "alt": "Rain & Night Study",
-          "label": "Beauty shot"
-        }
-      ]
-    },
-    {
       "id": "project-4",
       "title": "Forest Light Study",
       "category": "Environment",
@@ -72,16 +42,47 @@
       ]
     },
     {
-      "id": "project-5",
-      "title": "Product Motion Study",
-      "category": "Look Development",
-      "description": "Stylized commercial staging built around a hero object, nature elements and warm directional light.",
-      "layout": "large",
-      "video": "assets/product-film.mp4",
+      "id": "gameplay-prototype",
+      "title": "Unreal Gameplay Prototype",
+      "category": "Gameplay",
+      "description": "Real-time interaction and prototype testing inside Unreal Engine.",
+      "software": "Unreal Engine",
+      "layout": "half",
+      "video": "assets/unreal-gameplay.mp4",
       "images": [
         {
-          "src": "assets/product-wide.jpg",
-          "alt": "Product Motion Study",
+          "src": "assets/unreal-gameplay.jpg",
+          "alt": "Unreal gameplay prototype screenshot",
+          "label": "Gameplay preview"
+        }
+      ]
+    },
+    {
+      "id": "project-1",
+      "title": "The Alcatraz Escape",
+      "category": "Cinematic",
+      "description": "Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.",
+      "layout": "large",
+      "video": "assets/alcatraz-cinematic.mp4",
+      "images": [
+        {
+          "src": "assets/alcatraz-cinematic.jpg",
+          "alt": "The Alcatraz Escape",
+          "label": "Beauty shot"
+        }
+      ]
+    },
+    {
+      "id": "project-3",
+      "title": "Rain & Night Study",
+      "category": "Environment",
+      "description": "Dark atmospheric environment focused on mood, depth, foliage and lighting.",
+      "layout": "half",
+      "video": "assets/environment-rain.mp4",
+      "images": [
+        {
+          "src": "assets/environment-rain.jpg",
+          "alt": "Rain & Night Study",
           "label": "Beauty shot"
         }
       ]

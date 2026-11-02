@@ -1,68 +1,67 @@
-# Categorized 3D cover-flow decks
+# Independent project galleries
 
-Open `cover-flow-demo.html` for the standalone vanilla HTML/CSS/JavaScript example, or use the portfolio's Selected Work section. Serve files over HTTP so browser ES modules and JSON requests work:
+The homepage lists project cover cards. Each card opens an independent page:
+
+- `gallery.html?project=project-2` — Mocha Wood perfume
+- `gallery.html?project=project-4` — Forest Light Study
+- `gallery.html?project=gameplay-prototype` — Unreal Gameplay Prototype
+
+Each page contains exactly one project's renders, metadata and optional film. Its image carousel loops within that project. It cannot advance into another project's work. Homepage category filters only filter the cover cards; “All projects” lists all cards, never a combined image deck.
+
+New projects get a new stable ID and gallery URL when added through the owner editor. Put all angles/renders of the same model inside that project. A different model gets a separate project. Projects not uploaded yet do not show dummy or unrelated images. An unknown URL displays “Project not found.”
+
+The supplied Mocha Wood images are in one perfume gallery. The duplicate Product Motion Study entry used the same Mocha image and video, which remain in Mocha's gallery. Existing media files are preserved. Gameplay's existing screenshot and clip now have their own project entry. No anime character assets have been supplied, so no character gallery is fabricated.
+
+## 3D cover-flow mechanics
+
+`OrbitCarousel` in `orbit-carousel.js` and `orbit-carousel.css` uses vanilla JavaScript, CSS perspective and Web Animations. No external frameworks, icon/font libraries or WebGL packages are required.
+
+- Front card: scale `1.08`, opacity `1`, z-index `30`, strong shadow.
+- Two side previews: scale `.85`, opacity `.7`, z-index `10`, Y rotations `+10deg` and `-10deg`.
+- Standby cards: zero opacity, no keyboard or pointer interaction.
+- Wheel input over the stage, drag/swipe, focused arrow keys, buttons and side clicks navigate within the same project.
+- Autoplay pauses offscreen, when the page is hidden, or on manual interaction. Reduced motion disables transitions and automatic rotation by default.
+- One image means one card. Two images repeat the other image at both edges without changing the logical image count.
+
+## Data and owner editor
+
+`data/projects.json` is the public fallback collection. A connected CMS supplies the same structure. See `CMS-SETUP.md` for the still-required Supabase setup before real login/uploads can work.
+
+Projects accept `software`, `breakdown` and `renderInfo` text fields. Images can have a `label`, such as `Clay render`, `Wireframe`, `Beauty shot` or `Detail close-up`, and descriptive `alt` text. Upload real images for each view; no artificial clay/wireframe content is generated. Missing metadata displays “Not specified.”
+
+The editor's **Add project** creates a separate gallery. **Save project changes** saves within the editing session; **Publish** persists to the connected CMS. Published entries have an **Open gallery** link.
+
+## Standalone demonstration and reuse
+
+Serve the checkout over HTTP:
 
 ```sh
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-There are no runtime frameworks, remote font/icon dependencies, or WebGL packages. CSS perspective and the Web Animations API provide the depth and transitions. The component has no continuously running animation frame loop.
+`cover-flow-demo.html` demonstrates the standalone project switcher. It also selects one project at a time; there is no combined render deck.
 
-## Behavior
+For a dedicated gallery, pass exactly one project to `ProjectDecks`:
 
-- **All** shows every project's renders; category tabs restrict the project list. A project tab loads only that project's images. Deck changes fade out/in; rapid changes keep only the newest selection.
-- The active card uses `scale(1.08)`, opacity `1` and z-index `30`. Exactly two side previews use `scale(.85)`, opacity `.7`, z-index `10` and left/right Y rotations of `+10deg`/`-10deg`. Standby images have opacity zero and cannot receive focus or pointer hits.
-- Single-image projects show one card. Two-image projects repeat the other image at the two edges so the circular deck still has left and right previews; the logical counter remains two images.
-- Scroll the mouse wheel **over the cards**, drag/swipe, use focused left/right arrow keys, or select a side card to advance. Wheel input is normalized and throttled for trackpads; Ctrl+wheel keeps browser zoom. Page scrolling outside the stage is unaffected.
-- Autoplay has a pause control, stops for manual interaction and pauses when offscreen, hidden or covered by a project viewer. Reduced motion disables automatic rotation and transitions by default. The portfolio's existing explicit Animations control can override that preference.
-- Software, asset breakdown and lighting/render details appear below the cards. Missing values are shown as “Not specified”; the implementation does not invent software or render facts.
-- Opening a render from its project deck opens the corresponding image in the project viewer. “All projects” switches to the grid, which shares the active category/project filter.
-
-## Data and editor
-
-Public fallback data lives in `data/projects.json`. The owner studio supports the same optional metadata; real CMS connection remains described in `CMS-SETUP.md`.
-
-Each project accepts these optional strings:
-
-```json
-{
-  "software": "Your actual software and versions",
-  "breakdown": "Your actual asset construction, topology and materials",
-  "renderInfo": "Your actual renderer and lighting setup"
-}
+```js
+import {ProjectDecks} from './project-decks.js';
+const gallery = new ProjectDecks(document.getElementById('my-gallery'), {
+  prefix: 'myGallery',
+  singleProject: true,
+  onOpen: (project, triggerButton, imageIndex) => {
+    // Open this project's full-size image, preserving focus as appropriate.
+  }
+});
+await gallery.setProjects([yourProject]);
 ```
 
-Each image can also have a `label` (up to 100 characters), for example `Clay render`, `Wireframe`, `Textured beauty` or `Detail close-up`. Upload the real images and set the matching labels; no artificial clay/wireframe images are generated from beauty shots. Existing projects without these new fields remain valid.
-
-## Reuse
-
-`OrbitCarousel` is the lower-level looping card component. `ProjectDecks` adds accessible category/project tabs, metadata, auto-rotation and deck switching:
-
-```html
-<link rel="stylesheet" href="orbit-carousel.css">
-<section id="my-decks"></section>
-<script type="module">
-  import {ProjectDecks} from './project-decks.js';
-  const response = await fetch('data/projects.json');
-  const data = await response.json();
-  const decks = new ProjectDecks(document.getElementById('my-decks'), {
-    prefix: 'myDeck', // unique control IDs if embedding several components
-    onOpen: (project, triggerButton, imageIndex) => {
-      // Open your own project viewer; preserve triggerButton for focus restoration.
-      console.log(project.id, imageIndex);
-    }
-  });
-  await decks.setProjects(data.projects);
-</script>
-```
+`singleProject` rejects a collection containing more than one project. Even in the standalone switcher, render items are built only from the selected project.
 
 ## Validation
-
-With the checkout's prepared Playwright/Chromium environment and local server:
 
 ```sh
 node tests/orbit-browser.cjs
 node tests/cms-browser.cjs
 ```
 
-The cover-flow checks include exact depth values, category/project filtering, looping, wheel/drag/arrows, opening the selected image, filtering the grid, rapid-switch races, four viewport sizes, reduced motion, 1/2/12-image edge cases and the standalone demo. CMS checks use a simulated backend and include the new labels and metadata; a real Supabase project is still required to validate live authentication, storage and publishing policies.
+Browser checks cover distinct gallery URLs, reloading deep links, image isolation, correct project films, unknown/unuploaded projects, exact depth mechanics, looping, wheel/drag/arrows, card filtering, four viewport sizes, reduced motion and 1/2/12-image edge cases. CMS integration tests use a simulated backend and verify a newly published project opens its own gallery. Real Supabase authentication, storage and authorization remain unverified until the external project is connected.

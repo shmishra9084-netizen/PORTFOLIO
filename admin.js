@@ -4,6 +4,7 @@ import {validateDocument} from './project-store.js';
 const $=id=>document.getElementById(id), client=new CMSClient();
 let data={version:1,projects:[]},current=null,images=[],dirty=false,formDirty=false,busy=false,previewIndex=0,previewTimer;
 const files=new Map(),urls=new Map();
+let publishedIds=new Set();
 let previewCarousel=null;
 const fields=['title','category','description','layout','video','software','breakdown','renderInfo'];
 function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error);}
@@ -22,6 +23,7 @@ function renderList(){
   const up=button('↑','Move '+project.title+' up',()=>moveProject(index,-1));up.disabled=index===0;
   const down=button('↓','Move '+project.title+' down',()=>moveProject(index,1));down.disabled=index===data.projects.length-1;
   actions.append(up,down,button('Delete','Delete '+project.title,()=>{if(!confirm('Remove “'+project.title+'” from your portfolio? This takes effect after publishing.'))return;data.projects.splice(index,1);markDirty();if(current===project.id)edit(data.projects[0]?.id||null);renderList()}));
+  if(publishedIds.has(project.id)){const link=document.createElement('a');link.href='gallery.html?project='+encodeURIComponent(project.id);link.target='_blank';link.rel='noopener';link.textContent='Open gallery ↗';actions.append(link)}
   row.append(select,actions);$('project-list').append(row);
  });
  if(!data.projects.length){const text=document.createElement('p');text.textContent='No projects yet. Add your first model.';$('project-list').append(text);}
@@ -81,7 +83,7 @@ $('new-project').addEventListener('click',()=>{if(canLeaveForm()){edit(null);$('
 async function loadProjects(){
  const remote=await client.read();
  data=remote||validateDocument(await (await fetch('data/projects.json',{cache:'no-store'})).json());
- dirty=false;formDirty=false;edit(data.projects[0]?.id||null);$('publish-summary').textContent='Your portfolio is up to date.';$('draft-state').textContent='Published version';updatePublish();
+ publishedIds=new Set(data.projects.map(project=>project.id));dirty=false;formDirty=false;edit(data.projects[0]?.id||null);$('publish-summary').textContent='Your portfolio is up to date.';$('draft-state').textContent='Published version';updatePublish();
 }
 function showOwner(){
  $('login-panel').hidden=true;$('workspace').hidden=false;$('publish-bar').hidden=false;$('account-bar').hidden=false;$('account-email').textContent=client.session.user?.email||'Portfolio owner';
@@ -100,7 +102,7 @@ $('publish').addEventListener('click',async()=>{
  try{
   const publication=structuredClone(data),used=new Set(publication.projects.flatMap(p=>p.images.map(i=>i.src)));
   for(const [path,file] of files){if(!used.has(path))continue;status('Uploading '+file.name+'…');const url=await client.upload(file);publication.projects.forEach(p=>p.images.forEach(image=>{if(image.src===path)image.src=url}));}
-  status('Publishing projects…');await client.publish(publication);data=publication;dirty=false;files.clear();urls.forEach(url=>URL.revokeObjectURL(url));urls.clear();edit(current);$('draft-state').textContent='Published';$('publish-summary').textContent='Your portfolio is up to date.';status('Published! Your images and project details are saved. Visitors see them on their next page load.');
+  status('Publishing projects…');await client.publish(publication);data=publication;publishedIds=new Set(data.projects.map(project=>project.id));dirty=false;files.clear();urls.forEach(url=>URL.revokeObjectURL(url));urls.clear();edit(current);$('draft-state').textContent='Published';$('publish-summary').textContent='Your portfolio is up to date.';status('Published! Your images and project details are saved. Visitors see them on their next page load.');
  }catch(error){status(error.message,true)}finally{busy=false;document.body.removeAttribute('aria-busy');$('logout').disabled=false;updatePublish()}
 });
 window.addEventListener('beforeunload',event=>{if(dirty||formDirty||busy){event.preventDefault();event.returnValue=''}});

@@ -1,10 +1,11 @@
 import {OrbitCarousel} from './orbit-carousel.js';
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text)el.textContent=text;return el;};
 export class ProjectDecks {
-  constructor(root,{motion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches,onOpen=()=>{},prefix='workOrbit'}={}){
-    this.root=root;this.motion=motion;this.onOpen=onOpen;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.hovered=false;this.focused=false;this.grid=false;this.filterRevision=0;
-    root.classList.add('project-decks');
+  constructor(root,{motion=()=>!matchMedia('(prefers-reduced-motion: reduce)').matches,onOpen=()=>{},prefix='workOrbit',singleProject=false}={}){
+    this.root=root;this.singleProject=singleProject;this.motion=motion;this.onOpen=onOpen;this.prefix=prefix;this.projects=[];this.category=null;this.project=null;this.wantsPlay=false;this.visible=false;this.hovered=false;this.focused=false;this.grid=false;this.filterRevision=0;
+    root.classList.add('project-decks');if(singleProject)root.classList.add('is-single-gallery');
     root.innerHTML=`<div class="deck-filters"><p class="deck-filter-label">Browse categories</p><div class="deck-tabs" data-categories role="tablist" aria-label="Project categories"></div><p class="deck-filter-label">Choose a project deck</p><div class="deck-tabs deck-project-tabs" data-projects role="tablist" aria-label="Project decks"></div></div><div data-panel role="tabpanel" tabindex="0"><div data-stage aria-label="Project render cover flow"></div><div class="orbit-caption"><div class="deck-render-label" data-label></div><span class="tag" data-category></span><h3 data-title></h3><p data-description></p></div><dl class="deck-meta" data-meta></dl><div class="orbit-navigation"><button type="button" data-prev aria-label="Previous project render">←</button><span class="orbit-count" data-count></span><button type="button" data-next aria-label="Next project render">→</button><button type="button" data-play>Auto-rotate</button><button type="button" data-open>Open project ↗</button></div><p class="orbit-hint">Scroll, drag or swipe · Arrow keys to browse</p></div>`;
+    if(singleProject)root.querySelector('.deck-filters').hidden=true;
     this.elements=Object.fromEntries(['categories','projects','panel','stage','label','category','title','description','meta','prev','count','next','play','open'].map(key=>[key,root.querySelector(`[data-${key}]`)]));
     for(const key of ['stage','category','title','description','prev','count','next','play','open'])this.elements[key].id=prefix+key[0].toUpperCase()+key.slice(1);
     this.elements.panel.id=prefix+'Panel';
@@ -33,22 +34,23 @@ export class ProjectDecks {
   }
   markTabs(container,value){for(const button of container.children){const active=button.dataset.value===JSON.stringify(value);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;if(active)this.elements.panel.setAttribute('aria-labelledby',button.id)}}
   filteredProjects(){return this.projects.filter(p=>this.category===null||p.category===this.category)}
-  projectTabs(){this.tabs(this.elements.projects,[{value:null,label:'All projects'},...this.filteredProjects().map(p=>({value:p.id,label:p.title}))],this.project,value=>{this.project=value;this.markTabs(this.elements.projects,value);this.switchDeck()});this.markTabs(this.elements.projects,this.project)}
+  projectTabs(){this.tabs(this.elements.projects,this.filteredProjects().map(p=>({value:p.id,label:p.title})),this.project,value=>{this.project=value;this.markTabs(this.elements.projects,value);this.switchDeck()});this.markTabs(this.elements.projects,this.project)}
   setProjects(projects){
-    this.projects=projects;this.category=null;this.project=null;
-    this.tabs(this.elements.categories,[{value:null,label:'All'},...[...new Set(projects.map(p=>p.category))].map(category=>({value:category,label:category||'Uncategorized'}))],null,value=>{this.category=value;this.project=null;this.markTabs(this.elements.categories,value);this.projectTabs();this.switchDeck()});
+    if(this.singleProject&&projects.length!==1)throw Error('A project gallery must contain exactly one project.');
+    this.projects=projects;this.category=null;this.project=projects[0]?.id||null;
+    this.tabs(this.elements.categories,[{value:null,label:'All'},...[...new Set(projects.map(p=>p.category))].map(category=>({value:category,label:category||'Uncategorized'}))],null,value=>{this.category=value;this.project=this.filteredProjects()[0]?.id||null;this.markTabs(this.elements.categories,value);this.projectTabs();this.switchDeck()});
     this.projectTabs();this.wantsPlay=this.motion();return this.switchDeck(false);
   }
   async switchDeck(animated=true){
     const version=++this.filterRevision;clearInterval(this.timer);this.wantsPlay=animated?false:this.wantsPlay;
-    const projects=this.filteredProjects().filter(p=>this.project===null||p.id===this.project);
+    const projects=this.filteredProjects().filter(p=>p.id===this.project);
     const items=projects.flatMap(project=>project.images.map((image,imageIndex)=>({...image,title:image.label?`${project.title} — ${image.label}`:`${project.title} · ${imageIndex+1}`,project,imageIndex})));
     this.elements.open.disabled=true;
     if(!items.length){this.elements.title.textContent='No renders yet';this.elements.description.textContent='Add images to a project to start this deck.';this.elements.label.textContent=this.elements.category.textContent='';this.elements.meta.replaceChildren();this.elements.count.textContent='0 / 0'}
     if(animated)await this.carousel.replaceItems(items);else this.carousel.setItems(items);
     if(version!==this.filterRevision)return;
     this.elements.prev.disabled=this.elements.next.disabled=this.elements.play.disabled=items.length<2;this.elements.open.disabled=!items.length;
-    this.elements.panel.dataset.deckProject=this.project||'all';this.sync();
+    this.elements.panel.dataset.deckProject=this.project||'';this.sync();
     this.root.dispatchEvent(new CustomEvent('deckfilterchange',{detail:{projects},bubbles:true}));
   }
   updateDetails(index){
