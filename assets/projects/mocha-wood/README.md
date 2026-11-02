@@ -1,19 +1,20 @@
-# Mocha Wood
+# Mocha Wood — five uploaded renders
 
 This folder feeds only this project's gallery:
 https://shmishra9084-netizen.github.io/PORTFOLIO/gallery.html?project=project-2
 
 ## Replace the renders
 
-- `render-01.jpg` — existing original render: keep or replace
-- `render-02.jpg` — existing original render: keep or replace
-- `render-03.jpg` — existing original render: keep or replace
-- `render-04.png` — blank image: replace with your render
+- `render-01.jpeg` — first render / cover
+- `render-02.jpeg` — second render
+- `render-03.png` — third render
+- `render-04.png` — fourth render
+- `render-05.png` — fifth render
 
-In GitHub, open this folder, select **Add file → Upload files**, and upload your real image using the **exact same filename and extension**. Commit to `main`; GitHub Pages will rebuild. Export a PNG for a `.png` slot or a JPEG for a `.jpg` slot; do not just rename the extension. Keep filenames lowercase.
+All five uploaded images are registered in `data/projects.json`, in this order. The homepage preview and centered gallery both use these files.
 
-You can replace one slot at a time. Unreplaced slots remain intentionally blank. The same-project 3D animation is already connected to all four slots. No Supabase account or source-code changes are needed for replacing these files.
+In GitHub, open this folder, select **Add file → Upload files**, and upload your replacement using the **exact same filename and extension**. Commit to `main`; GitHub Pages will rebuild. Use real JPEG files for `.jpeg` and real PNG files for `.png`. Keep filenames lowercase. `.jpg` and `.jpeg` are different paths on the website.
 
-`film.mp4` is the existing project video. Keep or replace it with an actual MP4 of the same filename.
+The old film was deleted, so this project currently shows images only. To add a film again, upload a real video and set its path in this project's `video` field in `data/projects.json`.
 
-To change captions, project titles, add/remove slots or add a video, update this project's entry in `data/projects.json`. Merely adding a fifth file does not add it to the gallery. Do not put another project's images in this folder.
+To change captions, project titles, add/remove slots or add a video, update this project's entry in `data/projects.json`. Merely adding a sixth file does not add it to the gallery. Do not put another project's images in this folder.

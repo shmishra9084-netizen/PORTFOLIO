@@ -1,6 +1,6 @@
 const {chromium}=require('playwright');const fs=require('fs');
 const path=require('path');
-const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000',image=fs.readFileSync(path.join(__dirname,'../assets/projects/mocha-wood/render-01.jpg'));
+const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000',image=fs.readFileSync(path.join(__dirname,'../assets/projects/mocha-wood/render-01.jpeg'));
 (async()=>{
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});let errors=[];
  const plain=await browser.newPage();plain.on('pageerror',e=>errors.push(e.message));

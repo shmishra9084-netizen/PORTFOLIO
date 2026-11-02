@@ -1,6 +1,6 @@
 # Project render folders
 
-Each leaf folder belongs to one independent project gallery and contains its own registered image slots. Most projects have four slots; Male Character 01 has five uploaded JPEGs and Female Character 01 has six JPEG slots. Known renders and videos have been moved here without altering their contents. Missing renders are real blank PNGs or JPEGs in slightly different dark navy shades so the 3D preview can already animate.
+Each leaf folder belongs to one independent project gallery and contains its own registered image slots. Most projects have four slots; Mocha Wood has five uploaded JPEG/PNG renders, Male Character 01 has five uploaded JPEGs and Female Character 01 has six JPEG slots. Known renders and videos have been moved here without altering their contents. Missing renders are real blank PNGs or JPEGs in slightly different dark navy shades so the 3D preview can already animate.
 
 ```text
 assets/projects/
@@ -25,7 +25,7 @@ assets/projects/
 4. Commit to `main`. Wait for **Actions → pages build and deployment** to complete successfully.
 5. Refresh your portfolio. That slot changes in both the homepage's animated project preview and the independent gallery. Keep uppercase/lowercase exactly the same.
 
-Replace one or all registered slots whenever you are ready. Leave the others blank until you have renders. Existing real Mocha images are `render-01.jpg`, `render-02.jpg`, `render-03.jpg`; the blank fourth slot is `render-04.png`. Other existing projects have a JPEG in slot 01 and blank PNGs in slots 02–04. Male Character 01 uses `render-01.jpg` through `render-05.jpg`; Female Character 01 uses `render-01.jpg` through `render-06.jpg`. Male Character 02 still has four blank PNG slots. Female Character 02 has been removed.
+Replace one or all registered slots whenever you are ready. Leave the others blank until you have renders. Mocha Wood uses `render-01.jpeg`, `render-02.jpeg` and `render-03.png` through `render-05.png`, all uploaded renders. Other existing projects have a JPEG in slot 01 and blank PNGs in slots 02–04. Male Character 01 uses `render-01.jpg` through `render-05.jpg`; Female Character 01 uses `render-01.jpg` through `render-06.jpg`. Male Character 02 still has four blank PNG slots. Female Character 02 has been removed.
 
 A folder containing a project film also has `film.mp4`, which can be replaced by another real MP4 of that filename. Character galleries have no fake film.
 

@@ -4,7 +4,7 @@ const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000';
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});let errors=[];
  const page=await browser.newPage({viewport:{width:1454,height:814}});page.on('pageerror',error=>errors.push(error.message));
  await page.goto(base+'/');await page.evaluate(()=>localStorage.setItem('portfolio-motion','off'));await page.reload();
- await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===9);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayCount').filter({hasText:'1 / 4'}).waitFor();
+ await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===9);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayCount').filter({hasText:'1 / 5'}).waitFor();
  await page.getByRole('button',{name:'Enlarge image',exact:true}).click();await page.getByRole('button',{name:'Enable animation',exact:true}).waitFor();await page.locator('#overlayMotionNotice').waitFor();
  await page.locator('#overlayNext').click();if(await page.locator('#overlayStage .orbit-slide').evaluateAll(cards=>cards.some(card=>card.getAnimations().length)))throw Error('Stored Off was not respected before explicit consent');
  await page.locator('#overlayPlay').click();

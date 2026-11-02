@@ -7,20 +7,20 @@
       "category": "Product Visualization",
       "description": "Luxury product presentation combining material work, lighting, composition and motion.",
       "layout": "small",
-      "video": "assets/projects/mocha-wood/film.mp4",
+      "video": "",
       "images": [
         {
-          "src": "assets/projects/mocha-wood/render-01.jpg",
+          "src": "assets/projects/mocha-wood/render-01.jpeg",
           "alt": "Mocha Wood perfume — hero product render",
           "label": "Beauty shot"
         },
         {
-          "src": "assets/projects/mocha-wood/render-02.jpg",
+          "src": "assets/projects/mocha-wood/render-02.jpeg",
           "alt": "Mocha Wood perfume — wide composition with rocks and flowers",
           "label": "Wide composition"
         },
         {
-          "src": "assets/projects/mocha-wood/render-03.jpg",
+          "src": "assets/projects/mocha-wood/render-03.png",
           "alt": "Mocha Wood perfume — alternate camera angle",
           "label": "Alternate angle"
         },
@@ -28,6 +28,11 @@
           "src": "assets/projects/mocha-wood/render-04.png",
           "alt": "Mocha Wood — render slot 04",
           "label": "Render 04"
+        },
+        {
+          "src": "assets/projects/mocha-wood/render-05.png",
+          "alt": "Mocha Wood — render 05",
+          "label": "Render 05"
         }
       ]
     },

@@ -2,7 +2,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000';
 const root=path.join(__dirname,'..'),data=JSON.parse(fs.readFileSync(path.join(root,'data/projects.json')));
 (async()=>{
- if(data.projects.length!==9||data.projects.some(p=>p.images.length!==(p.id==='male-character-01'?5:p.id==='female-character-01'?6:4)))throw Error('Expected five male renders, six female slots and four slots in other galleries');
+ if(data.projects.length!==9||data.projects.some(p=>p.images.length!==((p.id==='male-character-01'||p.id==='project-2')?5:p.id==='female-character-01'?6:4)))throw Error('Expected five Mocha renders, five male renders, six female slots and four slots in other galleries');
  const characters=data.projects.filter(p=>p.category==='Characters');if(characters.length!==3)throw Error('Expected two male galleries and one female gallery');
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  for(const project of data.projects){
@@ -35,5 +35,12 @@ const root=path.join(__dirname,'..'),data=JSON.parse(fs.readFileSync(path.join(r
  if(await female.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Female gallery overflows mobile');
  await female.goto(base+'/gallery.html?project=female-character-01');await female.locator('#galleryCount').filter({hasText:'1 / 6'}).waitFor();await female.locator('#galleryPrev').click();await female.locator('#galleryCount').filter({hasText:'6 / 6'}).waitFor();await female.locator('#galleryNext').click();await female.locator('#galleryCount').filter({hasText:'1 / 6'}).waitFor();
  await female.goto(base+'/gallery.html?project=female-character-02');await female.getByRole('heading',{name:'Project not found',exact:true}).waitFor();if(await female.locator('#project-gallery').isVisible())throw Error('Removed project shows another gallery');
- if(errors.length)throw Error(errors.join('\n'));console.log('PASS: all 9 project folders, 39 valid image slots, including 5 uploaded character renders, preserved film URLs, per-folder instructions, isolated galleries, three distinct characters, six-slot female carousel and removed-gallery empty state, independent animated homepage previews, placeholder-gallery autoplay, reduced motion.');await browser.close();
+ await female.goto(base+'/');await female.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===9);
+ const mochaCard=female.getByRole('link',{name:'Open Mocha Wood gallery',exact:true});await mochaCard.scrollIntoViewIfNeeded();
+ await female.waitForFunction(()=>{const images=[...document.querySelectorAll('[data-project-id="project-2"] img')];return images.length===5&&images.every(img=>img.complete&&img.naturalWidth>1900)});
+ await mochaCard.click();await female.locator('#overlayCount').filter({hasText:'1 / 5'}).waitFor();await female.waitForFunction(()=>[...document.querySelectorAll('#overlayStage img')].every(img=>img.complete&&img.naturalWidth>1900));
+ for(let i=2;i<=5;i++){await female.locator('#overlayNext').click();await female.locator('#overlayCount').filter({hasText:`${i} / 5`}).waitFor()}
+ await female.locator('#overlayNext').click();await female.locator('#overlayCount').filter({hasText:'1 / 5'}).waitFor();if(await female.locator('#overlayFilmToggle').isVisible())throw Error('Deleted Mocha film offered');
+ const expectedMocha=data.projects.find(p=>p.id==='project-2').images.map(img=>img.src);const actualMocha=await female.locator('#overlayStage img').evaluateAll(imgs=>imgs.map(img=>img.getAttribute('src')));if(JSON.stringify(expectedMocha)!==JSON.stringify(actualMocha))throw Error('Mocha uploads missing or out of order');
+ if(errors.length)throw Error(errors.join('\n'));console.log('PASS: all 9 project folders, 40 valid image slots, including all 5 uploaded Mocha renders in preview/popup and 5 uploaded character renders, preserved film URLs, per-folder instructions, isolated galleries, three distinct characters, six-slot female carousel and removed-gallery empty state, independent animated homepage previews, placeholder-gallery autoplay, reduced motion.');await browser.close();
 })().catch(error=>{console.error(error);process.exit(1)});
