@@ -16,17 +16,20 @@ html{scrollbar-gutter:stable}
 #work .project .orbit-slide>img{object-fit:fill;transform:none!important}
 #work .orbit-slide-caption{display:none}
 /* Native dialog keeps the page behind the gallery inert and preserves keyboard focus. */
-dialog.project-dialog{position:fixed;inset:0;margin:auto;width:min(1160px,calc(100vw - 64px));max-width:none;max-height:92svh;padding:0;border:0;border-radius:18px;background:transparent;color:var(--text);overflow:visible;box-shadow:0 32px 120px #0008}
+dialog.project-dialog{position:fixed;inset:0;margin:auto;width:min(1160px,calc(100vw - 64px));max-width:none;max-height:92svh;padding:0;border:0;border-radius:18px;background:transparent;color:var(--text);overflow:visible;box-shadow:0 32px 100px #0006}
 dialog.project-dialog:not([open]){display:none}
-dialog.project-dialog::backdrop{background:#030605c9;backdrop-filter:blur(12px);animation:gallery-backdrop-in .35s ease-out}
-@keyframes gallery-backdrop-in{from{background:#03060500;backdrop-filter:blur(0)}to{background:#030605c9;backdrop-filter:blur(12px)}}
+dialog.project-dialog::backdrop{background:rgba(3,6,5,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:gallery-backdrop-in .35s ease-out}
+@keyframes gallery-backdrop-in{from{background:rgba(3,6,5,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}to{background:rgba(3,6,5,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}}
 html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
-.dialog-shell{background:#131916f5;border:1px solid #ffffff16;border-radius:18px;max-height:92svh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+/* Frost the page behind the panel; the render cards keep their own sharpness. */
+.dialog-shell{--muted:#c3cac2;background:linear-gradient(145deg,#ffffff09,transparent 55%),rgba(13,20,17,.66);-webkit-backdrop-filter:blur(20px) saturate(115%);backdrop-filter:blur(20px) saturate(115%);border:1px solid #ffffff29;box-shadow:inset 0 1px 0 #ffffff12;border-radius:18px;max-height:92svh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
 .dialog-header{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:24px 30px 4px}
 .dialog-header h2{font-size:clamp(1.3rem,2.5vw,2rem);font-weight:500;letter-spacing:-.035em;margin:8px 0}
 .dialog-header .eyebrow{font-size:.6rem}.dialog-header .eyebrow:before{display:none}
 .dialog-actions{display:flex;align-items:center;gap:10px;flex:none}
-.dialog-actions button{font:inherit;font-size:.75rem;background:#ffffff05;border:1px solid #ffffff25;border-radius:30px;color:var(--text);padding:10px 15px;cursor:pointer}
+.dialog-actions button{font:inherit;font-size:.75rem;background:#ffffff08;border:1px solid #ffffff30;border-radius:30px;color:var(--text);padding:10px 15px;cursor:pointer}
+.dialog-actions button:hover,#overlayDeck .orbit-navigation button:hover{background:#ffffff14;border-color:#ffffff50}
+.dialog-actions button:focus-visible,#overlayDeck .orbit-navigation button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .dialog-actions [hidden],.overlay-film[hidden]{display:none!important}
 #overlayDeck{border:0;background:none;border-radius:0;padding:0 0 14px;overflow:hidden}
 #overlayDeck .deck-filters{display:none}
@@ -45,7 +48,9 @@ html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
 .project-dialog.is-focused #overlayDeck .deck-meta{display:none}.project-dialog.is-focused #overlayDeck .orbit-stage{height:65svh}
 @media(max-width:900px){#work .grid{grid-template-columns:1fr 1fr;gap:24px}#work .project .media.project-preview-media{height:240px}.project-card-bar{padding:18px 20px 0}#work .project .project-copy{padding:10px 20px 24px}}
 @media(max-width:640px){#work .grid{grid-template-columns:1fr;gap:24px}#work .project .media.project-preview-media{height:260px}dialog.project-dialog{width:calc(100vw - 20px);max-height:94svh;border-radius:12px}.dialog-shell{max-height:94svh;border-radius:12px}.dialog-header{padding:18px 16px 0;align-items:start;gap:12px}.dialog-actions{gap:7px;flex-wrap:wrap;justify-content:end;max-width:170px}.dialog-actions button{padding:9px 11px;font-size:.68rem}#overlayDeck .orbit-stage{height:310px}#overlayDeck .deck-meta{grid-template-columns:1fr;padding:14px 20px 0;gap:12px}#overlayDeck .orbit-navigation{padding:0 12px;gap:7px}#overlayDeck .orbit-navigation button{font-size:.7rem}.dialog-hint{margin:14px 16px 20px;font-size:.58rem}.overlay-film{padding:18px 14px}.project-dialog.is-focused #overlayDeck .orbit-stage{height:56svh}}
-.dialog-header{position:sticky;top:0;z-index:50;background:#131916f5;padding-bottom:10px}
+.dialog-header{position:sticky;top:0;z-index:50;background:rgba(13,20,17,.36);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding-bottom:10px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.dialog-shell,.dialog-header{background:#131916f5}}
+@media(prefers-reduced-transparency:reduce){.dialog-shell,.dialog-header{background:#131916;-webkit-backdrop-filter:none;backdrop-filter:none}dialog.project-dialog::backdrop{background:#030605b3;-webkit-backdrop-filter:none;backdrop-filter:none;animation:none}}
 /* The reference keeps the incoming render sharp while the old centre recedes. */
 #overlayDeck .orbit-stage{background:radial-gradient(ellipse at 50% 65%,#6a58ad12,transparent 68%)}
 #overlayDeck .orbit-slide{box-shadow:0 26px 55px #0006}
