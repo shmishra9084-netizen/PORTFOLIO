@@ -1,8 +1,10 @@
+import {OrbitCarousel} from './orbit-carousel.js';
 import {CMSClient,configured} from './cms-client.js';
 import {validateDocument} from './project-store.js';
 const $=id=>document.getElementById(id), client=new CMSClient();
 let data={version:1,projects:[]},current=null,images=[],dirty=false,formDirty=false,busy=false,previewIndex=0,previewTimer;
 const files=new Map(),urls=new Map();
+let previewCarousel=null;
 const fields=['title','category','description','layout','video'];
 function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error);}
 function markDirty(){dirty=true;$('publish-summary').textContent='You have unpublished changes.';$('draft-state').textContent='Unpublished changes';updatePublish();}
@@ -46,15 +48,16 @@ function renderImages(){
 }
 function swapImage(index,offset){[images[index],images[index+offset]]=[images[index+offset],images[index]];formDirty=true;previewIndex=0;renderImages();}
 function renderPreview(){
- const image=images[previewIndex%Math.max(images.length,1)];document.querySelector('.preview').hidden=!image;
- if(!image)return;const element=$('preview-image');element.src=imageURL(image);element.alt=image.alt;$('preview-count').textContent=(previewIndex+1)+' / '+images.length;
- if(!matchMedia('(prefers-reduced-motion: reduce)').matches)element.animate([{opacity:.2,transform:'scale(1.02)'},{opacity:1,transform:'scale(1)'}],{duration:450,easing:'ease-out'});
+ const preview=document.querySelector('.preview');preview.hidden=images.length===0;
+ previewCarousel?.destroy();previewCarousel=null;if(!images.length)return;
+ previewIndex=Math.min(previewIndex,images.length-1);
+ previewCarousel=new OrbitCarousel($('preview-carousel'),{items:images.map((image,i)=>({src:imageURL(image),alt:image.alt,title:`Image ${i+1}`})),onChange:i=>{previewIndex=i;$('preview-count').textContent=(i+1)+' / '+images.length}});
  $('preview-prev').disabled=$('preview-next').disabled=$('preview-play').disabled=images.length<2;
 }
 function stopPreview(){clearInterval(previewTimer);previewTimer=null;$('preview-play').textContent='Play slideshow';}
-$('preview-prev').addEventListener('click',()=>{stopPreview();previewIndex=(previewIndex-1+images.length)%images.length;renderPreview()});
-$('preview-next').addEventListener('click',()=>{stopPreview();previewIndex=(previewIndex+1)%images.length;renderPreview()});
-$('preview-play').addEventListener('click',()=>{if(previewTimer){stopPreview();return}$('preview-play').textContent='Pause slideshow';previewTimer=setInterval(()=>{previewIndex=(previewIndex+1)%images.length;renderPreview()},3500)});
+$('preview-prev').addEventListener('click',()=>{stopPreview();previewCarousel?.step(-1)});
+$('preview-next').addEventListener('click',()=>{stopPreview();previewCarousel?.step(1)});
+$('preview-play').addEventListener('click',()=>{if(previewTimer){stopPreview();return}$('preview-play').textContent='Pause slideshow';previewTimer=setInterval(()=>{previewCarousel?.step(1)},3500)});
 $('image-upload').addEventListener('change',event=>{
  const chosen=[...event.target.files];event.target.value='';
  const types=['image/jpeg','image/png','image/webp','image/avif'];
@@ -104,3 +107,5 @@ window.addEventListener('beforeunload',event=>{if(dirty||formDirty||busy){event.
  if(!configured){$('setup-panel').hidden=false;$('login-button').disabled=true;$('email').disabled=true;$('password').disabled=true;status('CMS code is installed. Connect your free Supabase project to enable login and uploads.');return}
  try{if(await client.restore()){await loadProjects();showOwner();status('Welcome back. Your published projects are loaded.')}else status('Sign in with your portfolio owner account.')}catch(error){status(error.message,true)}
 })();
+
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPreview()});

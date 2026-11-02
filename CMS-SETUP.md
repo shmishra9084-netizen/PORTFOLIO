@@ -28,7 +28,7 @@ Until the connection below is completed, the public site uses `data/projects.jso
    Never use a `service_role`, `sb_secret_...`, database password, or personal password in this file. Anyone can read public website files. Database and storage policies restrict writes to your designated owner.
 6. After GitHub Pages deploys, open `https://shmishra9084-netizen.github.io/PORTFOLIO/admin.html` and sign in with the owner email and password.
 7. Existing projects load into the editor. **Add project**, enter details, and select multiple images. The first image is the cover. Reorder/remove images, add descriptions and use the gallery preview. **Save project changes** keeps the edit in the current editing session; **Publish to website** saves it permanently to Supabase. Refreshing/closing the tab before publication loses unsaved edits.
-8. Open the public site in another tab. Published changes appear on the next page load. Project cards cycle through images; click one to view the full gallery with previous/next, thumbnails, swipe navigation and play/pause. Automatic motion respects device preference and the portfolio's Animations control. A video URL is optional; a project with both images and video has a switch inside its viewer.
+8. Open the public site in another tab. Published changes appear on the next page load. The work section opens as a circular 3D carousel with angled side previews. Select a side card to centre it, then open the project. “All projects” switches back to the grid. Multi-image projects use the same 3D carousel in the viewer and owner preview, with previous/next, thumbnails, swipe navigation and play/pause. Automatic motion respects device preference and the portfolio's Animations control. A video URL is optional; a project with both images and video has a switch inside its viewer.
 
 ## Media and limits
 
@@ -53,3 +53,5 @@ Local browser integration checks use a simulated API because this repository has
 ## Browser integration regression test
 
 With Python 3, Playwright and Chromium installed, serve the checkout with `python3 -m http.server 8000 --bind 127.0.0.1` and run `node tests/cms-browser.cjs`. `PORTFOLIO_TEST_BASE_URL` can override the local server address. This test intercepts the CMS configuration and remote API in its browser context; it does not modify `cms-config.js`, use real credentials or publish to an actual backend. It exercises login permissions, multi-image upload, ordering, publishing, viewing, edit/delete, concurrent-edit errors, logout and responsive layouts. Chromium is expected at `/usr/bin/chromium` in the prepared cloud environment.
+
+Run `node tests/orbit-browser.cjs` against the same local server for 3D side-card selection, looping, pointer dragging, keyboard controls, grid switching, responsive layouts, reduced motion, and single/two/twelve-image edge cases. The carousel is implemented locally without the external libraries or sample photos used by the uploaded reference.
