@@ -37,7 +37,7 @@
     .modal{position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;padding:26px}.modal.open{display:flex}.modal-shell{width:min(1100px,100%);background:#0b0d10;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}.modal video{max-height:72vh;background:#000}.modal-bar{padding:14px 16px;display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#1a1d22;color:#fff;padding:9px 13px;border-radius:999px;cursor:pointer}
     @media(max-width:900px){.nav-links a:not(.resume-link){display:none}.project.large,.project.small,.project.half{grid-column:span 12}.project{min-height:360px}.about,.contact-box,.process-grid{grid-template-columns:1fr}.tool-row{grid-template-columns:1fr;gap:5px}.hero-content{padding-bottom:62px}.section-head{align-items:start;flex-direction:column}.contact-right{align-items:flex-start}}
     @media(max-width:560px){.wrap{width:min(calc(100% - 24px),var(--max))}.nav-inner{height:66px}.hero-content{padding-top:140px}.hero-actions{flex-direction:column;align-items:stretch}.btn{width:100%}section{padding:82px 0}.project{min-height:320px}.project-copy{inset:auto 18px 18px}.hero-meta{gap:18px}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project .media video,.project .media img{transition:none}}
+    @media(prefers-reduced-motion:reduce){html:not([data-motion="on"]){scroll-behavior:auto}html:not([data-motion="on"]) .project .media video,html:not([data-motion="on"]) .project .media img{transition:none}}
 
     /* Cinematic portfolio: generous type, framed imagery, quiet detail. */
     :root{--bg:#10110f;--panel:#191b17;--muted:#a9ada2;--accent:#d4e6a5;--max:1320px}
@@ -74,7 +74,7 @@
     .modal-shell{border-radius:5px}.close{border-radius:3px}.modal-bar{gap:20px}.modal-bar strong{font-size:.85rem}
     @media(max-width:900px){.wrap{width:calc(100% - 40px)}.hero{min-height:820px}.hero-content{padding-top:140px}.hero-caption{right:12px}.hero-meta{gap:20px}.project{min-height:440px}.about{gap:35px}.contact-box{padding:40px}.contact-right{gap:20px}}
     @media(max-width:560px){.nav-inner{height:72px}.nav-links{gap:12px}.nav-links a[href="#work"]{display:block}.nav-links .resume-link{padding:8px 12px}.hero{min-height:850px;max-height:none;height:auto}.hero-content{padding:150px 0 220px}h1{font-size:clamp(3.3rem,14vw,4.8rem)}.hero .sub{font-size:.9rem}.hero-actions{flex-direction:row;align-items:center;gap:18px}.hero-actions .btn{width:auto}.hero-meta{bottom:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.hero-meta div:last-child{grid-column:span 2}.hero-caption{display:none}section{padding:70px 0}.section-label{margin-bottom:28px;font-size:.58rem}.project,.project.half{min-height:380px}.project-copy{inset:auto 20px 20px}.project h3{font-size:1.6rem}.project-watch{top:16px;right:16px}.grid{gap:22px}.contact-box{padding:32px 24px}.tool-row{grid-template-columns:1fr}.modal{padding:12px}}
-    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    @media(prefers-reduced-motion:reduce){html:not([data-motion="on"]) *,html:not([data-motion="on"]) *:before,html:not([data-motion="on"]) *:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
     .menu-toggle{display:none;background:transparent;border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:3px;cursor:pointer;font-size:.75rem}
     .skip-link{position:fixed;top:10px;left:20px;z-index:200;transform:translateY(-160%);background:var(--accent);color:#151b12;padding:12px 18px}.skip-link:focus{transform:translateY(0)}
     .nav-links a[aria-current="location"]{color:var(--accent)}
@@ -90,8 +90,8 @@
       .resume-link:hover{background:#d4e6a51a;border-color:var(--accent)}
     }
     @media(prefers-reduced-motion:reduce){
-      .btn:hover,.btn:active,.project:hover .media img,.project:hover .media video,
-      .project:focus-visible .media img,.project:focus-visible .media video{transform:none}
+      html:not([data-motion="on"]) .btn:hover,html:not([data-motion="on"]) .btn:active,html:not([data-motion="on"]) .project:hover .media img,html:not([data-motion="on"]) .project:hover .media video,
+      html:not([data-motion="on"]) .project:focus-visible .media img,html:not([data-motion="on"]) .project:focus-visible .media video{transform:none}
     }
     .hero-line{display:block}
     .replay-intro{display:none;background:none;border:0;color:#c3c9bd;font:inherit;font-size:.72rem;cursor:pointer;padding:10px 0;text-decoration:underline;text-underline-offset:5px}
@@ -99,8 +99,12 @@
     .scroll-track{width:1px;height:34px;overflow:hidden;background:#ffffff30;position:relative}
     .scroll-track:after{content:"";position:absolute;inset:0;background:var(--accent);transform-origin:top}
     @keyframes scroll-flow{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
-    @media(prefers-reduced-motion:no-preference){.replay-intro.is-ready{display:inline-flex}.scroll-track:after{animation:scroll-flow 2s cubic-bezier(.65,0,.35,1) infinite}}
+    html[data-motion="on"] .replay-intro.is-ready{display:inline-flex}html[data-motion="on"] .scroll-track:after{animation:scroll-flow 2s cubic-bezier(.65,0,.35,1) infinite}
     @media(max-width:560px){.hero-actions{row-gap:10px}.replay-intro{flex-basis:100%;text-align:left}.hero-content{padding-bottom:240px}}
+    .motion-toggle{display:none;border:1px solid #ffffff40;border-radius:3px;background:#10110f;color:var(--text);padding:9px 12px;font:inherit;font-size:.72rem;cursor:pointer}
+    .motion-toggle.is-ready{display:inline-flex}
+    html[data-motion="off"] *,html[data-motion="off"] *:before,html[data-motion="off"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    html[data-motion="off"] .btn:hover,html[data-motion="off"] .btn:active,html[data-motion="off"] .project .media img,html[data-motion="off"] .project .media video{transform:none!important}
   </style>
 </head>
 <body>
@@ -125,6 +129,7 @@
       <div class="hero-actions">
         <a class="btn primary" href="#work">Explore my work ↘</a>
         <a class="btn" href="mailto:shmishra9084@gmail.com">Let’s talk ↗</a>
+        <button class="motion-toggle" type="button" aria-pressed="false">Animations: Off</button>
         <button class="replay-intro" type="button" aria-label="Replay introduction animation">Replay intro ↻</button>
       </div>
       <a class="scroll-cue" href="#work"><span class="scroll-track" aria-hidden="true"></span>Scroll to explore</a>
@@ -211,9 +216,17 @@
   <script>
     const modal=document.getElementById('modal'), mv=document.getElementById('modalVideo'), mt=document.getElementById('modalTitle');
     const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    let motionPreference='system';
+    try{const saved=localStorage.getItem('portfolio-motion');if(saved==='on'||saved==='off')motionPreference=saved}catch{}
+    function motionEnabled(){return motionPreference==='on'||(motionPreference==='system'&&!reducedMotion.matches)}
+    function updateMotionControl(){
+      const enabled=motionEnabled();document.documentElement.dataset.motion=enabled?'on':'off';
+      motionToggle.textContent='Animations: '+(enabled?'On':'Off');motionToggle.setAttribute('aria-pressed',String(enabled));
+    }
+    const motionToggle=document.querySelector('.motion-toggle');motionToggle.classList.add('is-ready');updateMotionControl();
     const runningAnimations=new Set();
     function animate(element,frames,options){
-      if(reducedMotion.matches||!element.animate)return null;
+      if(!motionEnabled()||!element.animate)return null;
       const animation=element.animate(frames,options);
       runningAnimations.add(animation);
       const clean=()=>runningAnimations.delete(animation);
@@ -233,12 +246,13 @@
     const replayIntro=document.querySelector('.replay-intro');
     replayIntro.classList.add('is-ready');replayIntro.addEventListener('click',playIntro);
     playIntro();
+    const revealedElements=new Set();
     const revealObserver=new IntersectionObserver(entries=>{
       entries.forEach(({target,isIntersecting})=>{
         if(!isIntersecting)return;
         const frames=target.matches('.project, .process-card')?[{opacity:0,transform:'translateY(56px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}]:entranceFrames;
         animate(target,frames,{...entranceOptions,delay:Number(target.dataset.revealDelay||0)});
-        revealObserver.unobserve(target);
+        revealedElements.add(target);revealObserver.unobserve(target);
       });
     },{threshold:.12});
     document.querySelectorAll('.section-label, .section-head, .project, .about > div, .process-card, .contact-box').forEach(element=>{
@@ -248,8 +262,17 @@
       }
       revealObserver.observe(element);
     });
-    reducedMotion.addEventListener('change',()=>{
-      if(reducedMotion.matches){runningAnimations.forEach(animation=>animation.cancel());revealObserver.disconnect()}
+    function applyMotionPreference(){
+      updateMotionControl();
+      if(!motionEnabled())runningAnimations.forEach(animation=>animation.cancel());
+      else document.querySelectorAll('.section-label, .section-head, .project, .about > div, .process-card, .contact-box').forEach(element=>{if(!revealedElements.has(element))revealObserver.observe(element)});
+      syncMotion();
+    }
+    reducedMotion.addEventListener('change',applyMotionPreference);
+    motionToggle.addEventListener('click',()=>{
+      motionPreference=motionEnabled()?'off':'on';
+      try{localStorage.setItem('portfolio-motion',motionPreference)}catch{}
+      applyMotionPreference();if(motionEnabled())playIntro();
     });
     let activeCard,closingModal=false;
     const ambientVideos=[...document.querySelectorAll('video[autoplay], video[data-ambient]')];
@@ -257,7 +280,7 @@
     const videoObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{if(isIntersecting)visibleVideos.add(target);else visibleVideos.delete(target)});syncMotion()},{threshold:.1});
     ambientVideos.forEach(video=>{video.removeAttribute('autoplay');videoObserver.observe(video)});
     function syncMotion(){ambientVideos.forEach(video=>{
-      if(reducedMotion.matches||document.hidden||modal.classList.contains('open')||!visibleVideos.has(video)){video.pause();return}
+      if(!motionEnabled()||document.hidden||modal.classList.contains('open')||!visibleVideos.has(video)){video.pause();return}
       const source=video.querySelector('source[data-src]');if(source){source.src=source.dataset.src;source.removeAttribute('data-src');video.load()}
       video.play().catch(()=>{});
     })}
