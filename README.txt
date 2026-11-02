@@ -12,3 +12,10 @@ Current direction:
 
 Public contact shown: shmishra9084@gmail.com
 Phone number is intentionally not placed on the website.
+
+OWNER STUDIO & MULTI-IMAGE GALLERIES
+Open admin.html for the email/password project editor.
+One-time Supabase setup is required for real login, uploads and publishing:
+see CMS-SETUP.md and supabase/setup.sql. Configure public connection values
+in cms-config.js; never add service-role keys or passwords to the repository.
+Public gallery data falls back to data/projects.json when no CMS is connected.

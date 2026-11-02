@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "id": "project-1",
+      "title": "The Alcatraz Escape",
+      "category": "Cinematic",
+      "description": "Atmospheric storytelling through environment, camera, lighting and cinematic sequencing.",
+      "layout": "large",
+      "video": "assets/alcatraz-cinematic.mp4",
+      "images": [
+        {
+          "src": "assets/alcatraz-cinematic.jpg",
+          "alt": "The Alcatraz Escape"
+        }
+      ]
+    },
+    {
+      "id": "project-2",
+      "title": "Mocha Wood",
+      "category": "Product Visualization",
+      "description": "Luxury product presentation combining material work, lighting, composition and motion.",
+      "layout": "small",
+      "video": "assets/product-film.mp4",
+      "images": [
+        {
+          "src": "assets/product-hero.jpg",
+          "alt": "Mocha Wood perfume — hero product render"
+        },
+        {
+          "src": "assets/product-wide.jpg",
+          "alt": "Mocha Wood perfume — wide composition with rocks and flowers"
+        },
+        {
+          "src": "assets/product-film.jpg",
+          "alt": "Mocha Wood perfume — alternate camera angle"
+        }
+      ]
+    },
+    {
+      "id": "project-3",
+      "title": "Rain & Night Study",
+      "category": "Environment",
+      "description": "Dark atmospheric environment focused on mood, depth, foliage and lighting.",
+      "layout": "half",
+      "video": "assets/environment-rain.mp4",
+      "images": [
+        {
+          "src": "assets/environment-rain.jpg",
+          "alt": "Rain & Night Study"
+        }
+      ]
+    },
+    {
+      "id": "project-4",
+      "title": "Forest Light Study",
+      "category": "Environment",
+      "description": "Natural environment exploration with foliage framing, depth of field and cinematic movement.",
+      "layout": "half",
+      "video": "assets/forest-study.mp4",
+      "images": [
+        {
+          "src": "assets/forest-study.jpg",
+          "alt": "Forest Light Study"
+        }
+      ]
+    },
+    {
+      "id": "project-5",
+      "title": "Product Motion Study",
+      "category": "Look Development",
+      "description": "Stylized commercial staging built around a hero object, nature elements and warm directional light.",
+      "layout": "large",
+      "video": "assets/product-film.mp4",
+      "images": [
+        {
+          "src": "assets/product-wide.jpg",
+          "alt": "Product Motion Study"
+        }
+      ]
+    },
+    {
+      "id": "project-6",
+      "title": "Real-Time Scene Tests",
+      "category": "Real-Time / Unreal",
+      "description": "Development experiments exploring real-time environments, effects and interactive workflows.",
+      "layout": "small",
+      "video": "assets/unreal-vfx.mp4",
+      "images": [
+        {
+          "src": "assets/unreal-vfx.jpg",
+          "alt": "Real-Time Scene Tests"
+        }
+      ]
+    }
+  ]
+}

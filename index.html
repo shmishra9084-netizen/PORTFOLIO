@@ -105,6 +105,20 @@
     .motion-toggle.is-ready{display:inline-flex}
     html[data-motion="off"] *,html[data-motion="off"] *:before,html[data-motion="off"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     html[data-motion="off"] .btn:hover,html[data-motion="off"] .btn:active,html[data-motion="off"] .project .media img,html[data-motion="off"] .project .media video{transform:none!important}
+    .gallery-view[hidden],#modalVideo[hidden],.gallery-controls[hidden],.media-switch[hidden]{display:none!important}
+    .gallery-frame{position:relative;aspect-ratio:16/10;max-height:65vh;background:#050705;overflow:hidden;touch-action:pan-y}
+    .gallery-frame>img{height:100%;width:100%;object-fit:contain}
+    .gallery-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;font-size:.8rem}
+    .gallery-controls button,.media-switch{border:1px solid var(--line);background:#191e15;color:var(--text);border-radius:3px;padding:8px 12px;cursor:pointer}
+    .gallery-thumbs{display:flex;gap:9px;overflow-x:auto;padding:0 16px 12px;max-width:100%}
+    .gallery-thumbs button{flex-shrink:0;padding:2px;border:2px solid transparent;background:none;cursor:pointer;border-radius:3px}
+    .gallery-thumbs button[aria-pressed="true"]{border-color:var(--accent)}
+    .gallery-thumbs img{width:64px;height:45px;object-fit:cover}
+    .project .media .slide-image{position:absolute;inset:0;height:100%;object-fit:cover}
+    .gallery-badge{position:absolute;z-index:3;top:22px;left:22px;border:1px solid #ffffff40;border-radius:30px;background:#10150dbb;padding:8px 12px;font-size:.65rem;pointer-events:none}
+    .project-watch{pointer-events:none}.studio-link{color:var(--accent)}
+    .modal-bar>div{display:flex;gap:12px}.modal-shell{max-height:95svh;overflow:auto}
+    @media(max-width:560px){.gallery-controls{gap:6px;padding:10px;font-size:.7rem}.gallery-controls button{padding:8px}.modal-bar{flex-wrap:wrap}.gallery-badge{left:16px;top:16px}}
   </style>
 </head>
 <body>
@@ -210,9 +224,16 @@
     </section>
   </main>
 
-  <footer><div class="wrap footer-inner"><span>© 2026 Shiva Mishra</span><span>3D Artist · 3D Generalist · Unreal Engine</span></div></footer>
+  <footer><div class="wrap footer-inner"><span>© 2026 Shiva Mishra</span><span>3D Artist · 3D Generalist · Unreal Engine · <a class="studio-link" href="admin.html">Manage work ↗</a></span></div></footer>
 
-  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-shell"><video id="modalVideo" controls playsinline></video><div class="modal-bar"><strong id="modalTitle"></strong><button class="close" id="closeModal">Close ✕</button></div></div></div>
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-shell">
+    <video id="modalVideo" controls playsinline hidden></video>
+    <div class="gallery-view" id="galleryView" hidden><div class="gallery-frame" id="galleryFrame"><img id="galleryImage" alt=""></div>
+      <div class="gallery-controls"><button id="galleryPrev" type="button" aria-label="Previous image">← Previous</button><span id="galleryCount"></span><button id="galleryPlay" type="button">Pause slideshow</button><button id="galleryNext" type="button" aria-label="Next image">Next →</button></div>
+      <div id="galleryThumbs" class="gallery-thumbs" aria-label="Project images"></div>
+    </div>
+    <div class="modal-bar"><strong id="modalTitle"></strong><div><button class="media-switch" id="mediaSwitch" type="button" hidden>Watch film</button><button class="close" id="closeModal" type="button">Close ✕</button></div></div>
+  </div></div>
   <script>
     const modal=document.getElementById('modal'), mv=document.getElementById('modalVideo'), mt=document.getElementById('modalTitle');
     const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -266,7 +287,7 @@
       updateMotionControl();
       if(!motionEnabled())runningAnimations.forEach(animation=>animation.cancel());
       else document.querySelectorAll('.section-label, .section-head, .project, .about > div, .process-card, .contact-box').forEach(element=>{if(!revealedElements.has(element))revealObserver.observe(element)});
-      syncMotion();
+      syncMotion();window.dispatchEvent(new Event('portfolio-motion-change'));
     }
     reducedMotion.addEventListener('change',applyMotionPreference);
     motionToggle.addEventListener('click',()=>{
@@ -274,7 +295,6 @@
       try{localStorage.setItem('portfolio-motion',motionPreference)}catch{}
       applyMotionPreference();if(motionEnabled())playIntro();
     });
-    let activeCard,closingModal=false;
     const ambientVideos=[...document.querySelectorAll('video[autoplay], video[data-ambient]')];
     const visibleVideos=new Set();
     const videoObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{if(isIntersecting)visibleVideos.add(target);else visibleVideos.delete(target)});syncMotion()},{threshold:.1});
@@ -290,27 +310,8 @@
     menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';menuButton.setAttribute('aria-expanded',String(open));menuButton.textContent=open?'Close −':'Menu +';navigation.classList.toggle('is-open',open)});
     navigation.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuButton.getAttribute('aria-expanded')==='true'){closeMenu();menuButton.focus()}});
-    document.querySelectorAll('.project[data-video]').forEach(card=>{
-      card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label','Watch '+card.dataset.title);card.setAttribute('aria-haspopup','dialog');
-      const label=document.createElement('span');label.className='project-watch';label.setAttribute('aria-hidden','true');label.textContent='▶ Watch film';card.append(label);
-      function open(){if(closingModal||modal.classList.contains('open'))return;activeCard=card;mv.src=card.dataset.video;mt.textContent=card.dataset.title;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';animate(modal,[{opacity:0},{opacity:1}],{duration:220,easing:'ease-out'});animate(modal.querySelector('.modal-shell'),[{opacity:0,transform:'translateY(20px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.7,.2,1)'});syncMotion();document.getElementById('closeModal').focus();mv.play().catch(()=>{});}
-      card.addEventListener('click',open);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
-    });
-    async function closeModal(){
-      if(closingModal||!modal.classList.contains('open'))return;
-      closingModal=true;mv.pause();
-      // Cancel an unfinished opening transition before starting the exit.
-      modal.getAnimations({subtree:true}).forEach(animation=>animation.cancel());
-      const exit=animate(modal,[{opacity:1},{opacity:0}],{duration:180,easing:'ease-in',fill:'forwards'});
-      animate(modal.querySelector('.modal-shell'),[{transform:'scale(1)'},{transform:'scale(.98)'}],{duration:180,easing:'ease-in'});
-      if(exit)await exit.finished.catch(()=>{});
-      mv.removeAttribute('src');mv.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
-      modal.getAnimations({subtree:true}).forEach(animation=>animation.cancel());
-      document.body.style.overflow='';closingModal=false;syncMotion();activeCard?.focus();
-    }
-    document.getElementById('closeModal').addEventListener('click',closeModal);
-    modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
-    document.addEventListener('keydown',e=>{if(!modal.classList.contains('open'))return;if(e.key==='Escape')closeModal();if(e.key==='Tab'){const targets=[mv,document.getElementById('closeModal')];const first=targets[0],last=targets[1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+    window.portfolioUI={animate,motionEnabled,syncMotion,revealObserver,videoObserver,ambientVideos,visibleVideos};
   </script>
+  <script type="module" src="portfolio-gallery.js"></script>
 </body>
 </html>
