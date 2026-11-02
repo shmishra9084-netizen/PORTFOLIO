@@ -22,10 +22,11 @@ Public gallery data falls back to data/projects.json when no CMS is connected.
 
 REPLACE YOUR RENDERS DIRECTLY IN GITHUB
 All project files are organized under assets/projects/. See its README.md.
-Each gallery has four slots, including blank PNGs for missing renders.
+Most galleries have four slots. Male Character 01 has five uploaded JPEGs;
+Female Character 01 has six blank JPEG slots for your renders.
 Replace a slot with a real image of the exact same filename/extension and
 commit to main. This updates the animated card and gallery without a CMS.
-Characters have separate male-01, male-02, female-01 and female-02 folders.
+Characters have separate male-01, male-02 and female-01 folders.
 
 GALLERY VIEWER
 Project cards now open centered on the same page with animated transitions.

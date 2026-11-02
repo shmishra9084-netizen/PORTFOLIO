@@ -256,54 +256,34 @@
       "video": "",
       "images": [
         {
-          "src": "assets/projects/characters/female-01/render-01.png",
+          "src": "assets/projects/characters/female-01/render-01.jpg",
           "alt": "Female Character 01 — render slot 01",
           "label": "Render 01"
         },
         {
-          "src": "assets/projects/characters/female-01/render-02.png",
+          "src": "assets/projects/characters/female-01/render-02.jpg",
           "alt": "Female Character 01 — render slot 02",
           "label": "Render 02"
         },
         {
-          "src": "assets/projects/characters/female-01/render-03.png",
+          "src": "assets/projects/characters/female-01/render-03.jpg",
           "alt": "Female Character 01 — render slot 03",
           "label": "Render 03"
         },
         {
-          "src": "assets/projects/characters/female-01/render-04.png",
+          "src": "assets/projects/characters/female-01/render-04.jpg",
           "alt": "Female Character 01 — render slot 04",
           "label": "Render 04"
-        }
-      ]
-    },
-    {
-      "id": "female-character-02",
-      "title": "Female Character 02",
-      "category": "Characters",
-      "description": "Reserved gallery for female character 02. Renders will be added here.",
-      "layout": "half",
-      "video": "",
-      "images": [
-        {
-          "src": "assets/projects/characters/female-02/render-01.png",
-          "alt": "Female Character 02 — render slot 01",
-          "label": "Render 01"
         },
         {
-          "src": "assets/projects/characters/female-02/render-02.png",
-          "alt": "Female Character 02 — render slot 02",
-          "label": "Render 02"
+          "src": "assets/projects/characters/female-01/render-05.jpg",
+          "alt": "Female Character 01 — render slot 05",
+          "label": "Render 05"
         },
         {
-          "src": "assets/projects/characters/female-02/render-03.png",
-          "alt": "Female Character 02 — render slot 03",
-          "label": "Render 03"
-        },
-        {
-          "src": "assets/projects/characters/female-02/render-04.png",
-          "alt": "Female Character 02 — render slot 04",
-          "label": "Render 04"
+          "src": "assets/projects/characters/female-01/render-06.jpg",
+          "alt": "Female Character 01 — render slot 06",
+          "label": "Render 06"
         }
       ]
     }

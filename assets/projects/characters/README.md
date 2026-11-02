@@ -1,10 +1,11 @@
 # Character galleries
 
-Four independent character folders are prepared:
+Three separate character galleries are active:
 
-- `male-01/`
-- `male-02/`
-- `female-01/`
-- `female-02/`
+- `male-01/` — five uploaded JPEG renders
+- `male-02/` — four blank PNG slots
+- `female-01/` — six blank JPEG slots, `render-01.jpg` through `render-06.jpg`
 
-Each has its own gallery page. `male-01` now contains five uploaded JPEGs (`render-01.jpg` through `render-05.jpg`); the other three still have four blank PNG slots. For the remaining blank galleries, replace `render-01.png` through `render-04.png` with real PNG renders under the same names, and commit to `main`. Every character gets the same 3D animation. No character artwork has been invented. Use `data/projects.json` to rename characters and set render captions when you have chosen their final names.
+Female Character 02 has been removed as requested. Its folder contained only generated blank images and has been removed too. No uploaded character artwork was deleted.
+
+Replace files with actual images of the same filenames and formats, then commit to `main`. Each active character keeps its own independent animated gallery. See the README in each folder for its direct gallery link and instructions.

@@ -4,7 +4,7 @@ const base=process.env.PORTFOLIO_TEST_BASE_URL||'http://127.0.0.1:8000';
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
  const context=await browser.newContext({viewport:{width:1280,height:900},...(process.env.PORTFOLIO_RECORD_MOTION?{recordVideo:{dir:process.env.PORTFOLIO_RECORD_MOTION,size:{width:1280,height:900}}}:{})});
  const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
- await page.goto(base+'/');await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===10);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayCount').filter({hasText:'1 / 4'}).waitFor();
+ await page.goto(base+'/');await page.waitForFunction(()=>document.querySelectorAll('.project-card-bar').length===9);await page.getByRole('link',{name:'Open Mocha Wood gallery',exact:true}).click();await page.locator('#overlayCount').filter({hasText:'1 / 4'}).waitFor();
  const stage=page.locator('#overlayStage');await stage.hover({position:{x:900,y:150}});
  const initial=await stage.locator('.orbit-slide').evaluateAll(cards=>cards.map(card=>({index:card.dataset.itemIndex,filter:getComputedStyle(card).filter,position:card.dataset.position})));
  if(!initial.find(card=>card.position==='front').filter.includes('blur(0px)'))throw Error('Front render is not sharp');
