@@ -11,7 +11,8 @@
       "images": [
         {
           "src": "assets/alcatraz-cinematic.jpg",
-          "alt": "The Alcatraz Escape"
+          "alt": "The Alcatraz Escape",
+          "label": "Beauty shot"
         }
       ]
     },
@@ -25,15 +26,18 @@
       "images": [
         {
           "src": "assets/product-hero.jpg",
-          "alt": "Mocha Wood perfume — hero product render"
+          "alt": "Mocha Wood perfume — hero product render",
+          "label": "Beauty shot"
         },
         {
           "src": "assets/product-wide.jpg",
-          "alt": "Mocha Wood perfume — wide composition with rocks and flowers"
+          "alt": "Mocha Wood perfume — wide composition with rocks and flowers",
+          "label": "Wide composition"
         },
         {
           "src": "assets/product-film.jpg",
-          "alt": "Mocha Wood perfume — alternate camera angle"
+          "alt": "Mocha Wood perfume — alternate camera angle",
+          "label": "Alternate angle"
         }
       ]
     },
@@ -47,7 +51,8 @@
       "images": [
         {
           "src": "assets/environment-rain.jpg",
-          "alt": "Rain & Night Study"
+          "alt": "Rain & Night Study",
+          "label": "Beauty shot"
         }
       ]
     },
@@ -61,7 +66,8 @@
       "images": [
         {
           "src": "assets/forest-study.jpg",
-          "alt": "Forest Light Study"
+          "alt": "Forest Light Study",
+          "label": "Beauty shot"
         }
       ]
     },
@@ -75,7 +81,8 @@
       "images": [
         {
           "src": "assets/product-wide.jpg",
-          "alt": "Product Motion Study"
+          "alt": "Product Motion Study",
+          "label": "Beauty shot"
         }
       ]
     },
@@ -89,7 +96,8 @@
       "images": [
         {
           "src": "assets/unreal-vfx.jpg",
-          "alt": "Real-Time Scene Tests"
+          "alt": "Real-Time Scene Tests",
+          "label": "Beauty shot"
         }
       ]
     }

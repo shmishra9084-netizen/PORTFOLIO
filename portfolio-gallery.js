@@ -1,40 +1,20 @@
+import {ProjectDecks} from './project-decks.js';
 import {OrbitCarousel} from './orbit-carousel.js';
 import {CMSClient,configured} from './cms-client.js';
 import {validateDocument} from './project-store.js';
 const ui=window.portfolioUI,$=id=>document.getElementById(id),modal=$('modal'),video=$('modalVideo');
 let activeCard=null,activeProject=null,index=0,galleryTimer=null,closing=false,playing=false,inGallery=false;
 const slideshows=new Map();
-let galleryCarousel=null,workCarousel=null,workProjects=[],workTimer=null,workWantsPlay=false,workVisible=false,workHovered=false,workFocused=false;
-function syncWorkRotation(){
- clearInterval(workTimer);workTimer=null;
- $('workOrbitPlay').textContent=workWantsPlay?'Pause rotation':'Auto-rotate';
- if(!workCarousel||!workVisible||workHovered||workFocused||document.hidden||modal.classList.contains('open')||$('workOrbit').hidden||workProjects.length<2)return;
- if(workWantsPlay)workTimer=setInterval(()=>workCarousel.step(1),4200);
-}
+let galleryCarousel=null;
+const workDecks=new ProjectDecks($('workOrbit'),{motion:ui.motionEnabled,onOpen:(project,trigger,imageIndex)=>openProject(trigger,project,imageIndex)});
+function syncWorkRotation(){workDecks.sync()}
 function workView(gridView){
- document.querySelector('#work .grid').hidden=!gridView;$('workOrbit').hidden=gridView;
+ document.querySelector('#work .grid').hidden=!gridView;$('workOrbit').hidden=gridView;workDecks.grid=gridView;
  $('workGridView').setAttribute('aria-pressed',String(gridView));$('workOrbitView').setAttribute('aria-pressed',String(!gridView));syncWorkRotation();
 }
-function renderWorkCarousel(projects){
- workProjects=projects;workCarousel?.destroy();workWantsPlay=ui.motionEnabled();
- $('workViewControls').hidden=!projects.length;if(!projects.length){$('workOrbit').hidden=true;return}
- workCarousel=new OrbitCarousel($('workOrbitStage'),{
-  items:projects.map(p=>({src:p.images[0].src,alt:p.images[0].alt,title:p.title})),motion:ui.motionEnabled,
-  onChange:i=>{$('workOrbitTitle').textContent=projects[i].title;$('workOrbitCategory').textContent=projects[i].category;$('workOrbitDescription').textContent=projects[i].description;$('workOrbitCount').textContent=`${i+1} / ${projects.length}`},
-  onActivate:(i,card)=>openProject(card,projects[i])
- });
- $('workOrbitPrev').disabled=$('workOrbitNext').disabled=$('workOrbitPlay').disabled=projects.length<2;workView(false);
-}
-new IntersectionObserver(entries=>{workVisible=entries[0].isIntersecting;syncWorkRotation()},{threshold:.1}).observe($('workOrbit'));
-$('workOrbitPrev').addEventListener('click',()=>{workWantsPlay=false;workCarousel.step(-1);syncWorkRotation()});
-$('workOrbitNext').addEventListener('click',()=>{workWantsPlay=false;workCarousel.step(1);syncWorkRotation()});
-$('workOrbitPlay').addEventListener('click',()=>{workWantsPlay=!workWantsPlay;syncWorkRotation()});
-$('workOrbitOpen').addEventListener('click',()=>openProject($('workOrbitOpen'),workProjects[workCarousel.index]));
+function renderWorkCarousel(projects){$('workViewControls').hidden=!projects.length;if(!projects.length){$('workOrbit').hidden=true;return}workDecks.setProjects(projects);workView(false)}
 $('workGridView').addEventListener('click',()=>workView(true));$('workOrbitView').addEventListener('click',()=>workView(false));
-$('workOrbitStage').addEventListener('pointerdown',()=>{workWantsPlay=false;syncWorkRotation()});
-$('workOrbitStage').addEventListener('pointerenter',()=>{workHovered=true;syncWorkRotation()});$('workOrbitStage').addEventListener('pointerleave',()=>{workHovered=false;syncWorkRotation()});
-$('workOrbitStage').addEventListener('focusin',()=>{workFocused=true;syncWorkRotation()});$('workOrbitStage').addEventListener('focusout',event=>{workFocused=$('workOrbitStage').contains(event.relatedTarget);syncWorkRotation()});
-$('workOrbit').addEventListener('keydown',event=>{if(modal.classList.contains('open'))return;if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();workWantsPlay=false;workCarousel.step(event.key==='ArrowRight'?1:-1);syncWorkRotation()}});
+$('workOrbit').addEventListener('deckfilterchange',event=>{const ids=new Set(event.detail.projects.map(p=>p.id));document.querySelectorAll('#work .project').forEach(card=>card.hidden=!ids.has(card.dataset.projectId))});
 function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text)node.textContent=text;return node;}
 function stopGallery(){clearInterval(galleryTimer);galleryTimer=null;playing=false;$('galleryPlay').textContent='Play slideshow';}
 function showImage(next){const count=activeProject.images.length;galleryCarousel?.show((next+count)%count);}
@@ -46,13 +26,14 @@ function startGallery(){
  stopGallery();if(activeProject.images.length<2||document.hidden)return;
  playing=true;$('galleryPlay').textContent='Pause slideshow';galleryTimer=setInterval(()=>showImage(index+1),4200);
 }
-function showGallery(){
+function showGallery(startIndex=0){
  video.pause();video.hidden=true;$('galleryView').hidden=false;inGallery=true;
  $('mediaSwitch').hidden=!activeProject.video;$('mediaSwitch').textContent='Watch film';
  $('galleryThumbs').replaceChildren();
  activeProject.images.forEach((image,i)=>{const button=element('button');button.type='button';button.setAttribute('aria-label',`View image ${i+1}: ${image.alt||activeProject.title}`);const thumbnail=element('img');thumbnail.src=image.src;thumbnail.alt='';button.append(thumbnail);button.addEventListener('click',()=>{stopGallery();showImage(i)});$('galleryThumbs').append(button)});
  const single=activeProject.images.length<2;$('galleryPrev').disabled=$('galleryNext').disabled=$('galleryPlay').disabled=single;
- galleryCarousel?.destroy();galleryCarousel=new OrbitCarousel($('galleryFrame'),{items:activeProject.images.map((image,i)=>({...image,title:`${activeProject.title} · ${i+1}`})),motion:ui.motionEnabled,onChange:updateGallerySelection,onActivate:()=>{}});
+ galleryCarousel?.destroy();galleryCarousel=new OrbitCarousel($('galleryFrame'),{items:activeProject.images.map((image,i)=>({...image,title:image.label?`${activeProject.title} — ${image.label}`:`${activeProject.title} · ${i+1}`})),motion:ui.motionEnabled,onChange:updateGallerySelection,onActivate:()=>{}});
+ if(startIndex)galleryCarousel.show(startIndex);
  if(ui.motionEnabled())startGallery();
 }
 function showVideo(){
@@ -71,10 +52,10 @@ function syncCards(){
  });
 }
 const cardObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{const state=slideshows.get(target);if(state)state.visible=isIntersecting});syncCards()},{threshold:.15});
-function openProject(card,project){
+function openProject(card,project,imageIndex=0){
  if(closing||modal.classList.contains('open'))return;activeCard=card;activeProject=project;$('modalTitle').textContent=project.title;
  modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
- if(project.images.length>1||!project.video)showGallery();else showVideo();
+ if(project.images.length>1||!project.video)showGallery(imageIndex);else showVideo();
  ui.animate(modal,[{opacity:0},{opacity:1}],{duration:220,easing:'ease-out'});
  ui.animate(modal.querySelector('.modal-shell'),[{opacity:0,transform:'translateY(20px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:300,easing:'ease-out'});
  ui.syncMotion();syncCards();syncWorkRotation();$('closeModal').focus();
@@ -88,7 +69,7 @@ async function closeProject(){
  ui.syncMotion();syncCards();syncWorkRotation();activeCard?.focus();
 }
 function bindCard(card,project){
- card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-haspopup','dialog');card.setAttribute('aria-label',`Open ${project.title}${project.images.length>1?`, ${project.images.length} images`:''}`);
+ card.dataset.projectId=project.id;card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-haspopup','dialog');card.setAttribute('aria-label',`Open ${project.title}${project.images.length>1?`, ${project.images.length} images`:''}`);
  const label=element('span','project-watch',project.images.length>1||!project.video?'View gallery ↗':'▶ Watch film');label.setAttribute('aria-hidden','true');card.append(label);
  if(project.images.length>1){const badge=element('span','gallery-badge',project.images.length+' images');card.append(badge);slideshows.set(card,{project,index:0,visible:false,timer:null});cardObserver.observe(card)}
  card.addEventListener('click',()=>openProject(card,project));card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject(card,project)}});
@@ -106,7 +87,7 @@ function renderProjects(data){
  });grid.replaceChildren(fragment);renderWorkCarousel(data.projects);
  if(!data.projects.length)grid.append(element('p','','New work is on its way. Check back soon.'));
 }
-$('galleryFrame').addEventListener('pointerdown',stopGallery);
+$('galleryFrame').addEventListener('pointerdown',stopGallery);$('galleryFrame').addEventListener('focusin',stopGallery);
 $('galleryPrev').addEventListener('click',()=>{stopGallery();showImage(index-1)});$('galleryNext').addEventListener('click',()=>{stopGallery();showImage(index+1)});
 $('galleryPlay').addEventListener('click',()=>playing?stopGallery():startGallery());
 $('mediaSwitch').addEventListener('click',()=>{inGallery?showVideo():showGallery();$('mediaSwitch').focus()});
@@ -120,7 +101,7 @@ document.addEventListener('keydown',event=>{
   if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
  }
 });
-window.addEventListener('portfolio-motion-change',()=>{syncCards();if(!ui.motionEnabled()){stopGallery();workWantsPlay=false;galleryCarousel?.cancelAnimations();workCarousel?.cancelAnimations()}syncWorkRotation()});
+window.addEventListener('portfolio-motion-change',()=>{syncCards();if(!ui.motionEnabled()){stopGallery();galleryCarousel?.cancelAnimations();workDecks.motionChanged()}syncWorkRotation()});
 document.addEventListener('visibilitychange',()=>{syncCards();syncWorkRotation();if(document.hidden)stopGallery()});
 // Keep the original cards functional if remote data cannot load.
 document.querySelectorAll('#work .project').forEach((card,i)=>{const cover=card.querySelector('img')?.getAttribute('src')||card.querySelector('video')?.poster;bindCard(card,{id:'fallback-'+i,title:card.querySelector('h3').textContent,video:card.dataset.video,images:[{src:cover,alt:card.querySelector('h3').textContent}]})});

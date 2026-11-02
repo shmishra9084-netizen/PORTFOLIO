@@ -5,7 +5,7 @@ const $=id=>document.getElementById(id), client=new CMSClient();
 let data={version:1,projects:[]},current=null,images=[],dirty=false,formDirty=false,busy=false,previewIndex=0,previewTimer;
 const files=new Map(),urls=new Map();
 let previewCarousel=null;
-const fields=['title','category','description','layout','video'];
+const fields=['title','category','description','layout','video','software','breakdown','renderInfo'];
 function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error);}
 function markDirty(){dirty=true;$('publish-summary').textContent='You have unpublished changes.';$('draft-state').textContent='Unpublished changes';updatePublish();}
 function updatePublish(){$('publish').disabled=busy||!client.session||!dirty;$('new-project').disabled=busy;}
@@ -40,10 +40,11 @@ function renderImages(){
   const badge=document.createElement('small');badge.textContent=index===0?'Cover image':'Image '+(index+1);
   const alt=document.createElement('input');alt.value=image.alt;alt.placeholder='Describe this angle';alt.setAttribute('aria-label','Image '+(index+1)+' description');alt.maxLength=250;
   alt.addEventListener('input',()=>{image.alt=alt.value;formDirty=true});
+  const label=document.createElement('input');label.value=image.label||'';label.maxLength=100;label.placeholder='Beauty / Clay / Wireframe / Detail';label.setAttribute('aria-label','Image '+(index+1)+' render label');label.addEventListener('input',()=>{image.label=label.value;formDirty=true});
   const actions=document.createElement('div');actions.className='tile-actions';
   const left=button('←','Move image '+(index+1)+' earlier',()=>swapImage(index,-1));left.disabled=index===0;
   const right=button('→','Move image '+(index+1)+' later',()=>swapImage(index,1));right.disabled=index===images.length-1;
-  actions.append(left,right,button('Remove','Remove image '+(index+1),()=>{images.splice(index,1);formDirty=true;previewIndex=0;renderImages()}));tile.append(badge,img,alt,actions);$('image-list').append(tile);
+  actions.append(left,right,button('Remove','Remove image '+(index+1),()=>{images.splice(index,1);formDirty=true;previewIndex=0;renderImages()}));tile.append(badge,img,label,alt,actions);$('image-list').append(tile);
  });renderPreview();
 }
 function swapImage(index,offset){[images[index],images[index+offset]]=[images[index+offset],images[index]];formDirty=true;previewIndex=0;renderImages();}
@@ -51,7 +52,7 @@ function renderPreview(){
  const preview=document.querySelector('.preview');preview.hidden=images.length===0;
  previewCarousel?.destroy();previewCarousel=null;if(!images.length)return;
  previewIndex=Math.min(previewIndex,images.length-1);
- previewCarousel=new OrbitCarousel($('preview-carousel'),{items:images.map((image,i)=>({src:imageURL(image),alt:image.alt,title:`Image ${i+1}`})),onChange:i=>{previewIndex=i;$('preview-count').textContent=(i+1)+' / '+images.length}});
+ previewCarousel=new OrbitCarousel($('preview-carousel'),{onInteract:stopPreview,items:images.map((image,i)=>({src:imageURL(image),alt:image.alt,title:image.label||`Image ${i+1}`})),onChange:i=>{previewIndex=i;$('preview-count').textContent=(i+1)+' / '+images.length}});
  $('preview-prev').disabled=$('preview-next').disabled=$('preview-play').disabled=images.length<2;
 }
 function stopPreview(){clearInterval(previewTimer);previewTimer=null;$('preview-play').textContent='Play slideshow';}

@@ -10,7 +10,8 @@ export function validateDocument(data) {
     ids.add(p.id);
     if (!p.title?.trim() || p.title.length > 140 || typeof p.description !== 'string' || p.description.length > 2000 || typeof p.category !== 'string' || p.category.length > 80) throw Error('Check project title, category and description.');
     if (!['large','small','half'].includes(p.layout) || !Array.isArray(p.images) || !p.images.length || p.images.length > 12) throw Error('Each project needs 1–12 images and a valid layout.');
-    for (const image of p.images) if (!safeMedia(image.src) || typeof image.alt !== 'string') throw Error('Invalid image path.');
+    for(const key of ['software','breakdown','renderInfo']) if(p[key]!==undefined&&(typeof p[key]!=='string'||p[key].length>2000)) throw Error('Project details must be text under 2000 characters.');
+    for (const image of p.images) {if (!safeMedia(image.src) || typeof image.alt !== 'string') throw Error('Invalid image path.');if(image.label!==undefined&&(typeof image.label!=='string'||image.label.length>100))throw Error('Image label must be under 100 characters.');}
     if (p.video && !safeMedia(p.video)) throw Error('Use an HTTPS video URL or a local assets path.');
   }
   return data;
