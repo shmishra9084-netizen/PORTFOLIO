@@ -1,6 +1,6 @@
 # Project render folders
 
-Each leaf folder belongs to one independent project gallery and contains four image slots. Known renders and videos have been moved here without altering their contents. Missing renders are real blank PNGs in slightly different dark navy shades so the 3D preview can already animate.
+Each leaf folder belongs to one independent project gallery and contains its own registered image slots. Most projects have four slots; Male Character 01 now contains five uploaded JPEG renders. Known renders and videos have been moved here without altering their contents. Missing renders are real blank PNGs in slightly different dark navy shades so the 3D preview can already animate.
 
 ```text
 assets/projects/
@@ -26,7 +26,7 @@ assets/projects/
 4. Commit to `main`. Wait for **Actions → pages build and deployment** to complete successfully.
 5. Refresh your portfolio. That slot changes in both the homepage's animated project preview and the independent gallery. Keep uppercase/lowercase exactly the same.
 
-Replace one or all four slots whenever you are ready. Leave the others blank until you have renders. Existing real Mocha images are `render-01.jpg`, `render-02.jpg`, `render-03.jpg`; the blank fourth slot is `render-04.png`. Other existing projects have a JPEG in slot 01 and blank PNGs in slots 02–04. All four character galleries begin with four blank PNGs.
+Replace one or all registered slots whenever you are ready. Leave the others blank until you have renders. Existing real Mocha images are `render-01.jpg`, `render-02.jpg`, `render-03.jpg`; the blank fourth slot is `render-04.png`. Other existing projects have a JPEG in slot 01 and blank PNGs in slots 02–04. Male Character 01 now uses `render-01.jpg` through `render-05.jpg`. The other three character galleries still have four blank PNGs each.
 
 A folder containing a project film also has `film.mp4`, which can be replaced by another real MP4 of that filename. Character galleries have no fake film.
 

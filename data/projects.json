@@ -186,29 +186,34 @@
       "id": "male-character-01",
       "title": "Male Character 01",
       "category": "Characters",
-      "description": "Reserved gallery for male character 01. Renders will be added here.",
+      "description": "Stylized male character render study with multiple camera views.",
       "layout": "half",
       "video": "",
       "images": [
         {
-          "src": "assets/projects/characters/male-01/render-01.png",
-          "alt": "Male Character 01 — render slot 01",
+          "src": "assets/projects/characters/male-01/render-01.jpg",
+          "alt": "Male Character 01 — character render 01",
           "label": "Render 01"
         },
         {
-          "src": "assets/projects/characters/male-01/render-02.png",
-          "alt": "Male Character 01 — render slot 02",
+          "src": "assets/projects/characters/male-01/render-02.jpg",
+          "alt": "Male Character 01 — character render 02",
           "label": "Render 02"
         },
         {
-          "src": "assets/projects/characters/male-01/render-03.png",
-          "alt": "Male Character 01 — render slot 03",
+          "src": "assets/projects/characters/male-01/render-03.jpg",
+          "alt": "Male Character 01 — character render 03",
           "label": "Render 03"
         },
         {
-          "src": "assets/projects/characters/male-01/render-04.png",
-          "alt": "Male Character 01 — render slot 04",
+          "src": "assets/projects/characters/male-01/render-04.jpg",
+          "alt": "Male Character 01 — character render 04",
           "label": "Render 04"
+        },
+        {
+          "src": "assets/projects/characters/male-01/render-05.jpg",
+          "alt": "Male Character 01 — character render 05",
+          "label": "Render 05"
         }
       ]
     },
