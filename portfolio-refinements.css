@@ -58,3 +58,39 @@ html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
 .motion-notice{margin:12px 30px 0;padding:12px 16px;border-radius:8px;background:#d4e6a510;color:var(--accent);font-size:.8rem}
 .motion-notice[hidden]{display:none}
 @media(max-width:640px){.motion-notice{margin:12px 16px 0;font-size:.72rem}.dialog-actions{max-width:185px}}
+
+/* Hero identity and the requested Games & Film headline. */
+.hero h1{max-width:1050px;font-size:clamp(3.4rem,8vw,7.2rem);line-height:.96;font-weight:500;letter-spacing:-.065em}
+.hero-name{display:block;color:#fff;letter-spacing:-.075em}
+.hero-title{display:block;margin-top:14px;color:var(--accent);font-family:Georgia,serif;font-size:clamp(2rem,4.2vw,4.15rem);line-height:1.04;letter-spacing:-.045em}
+@media(max-width:560px){.hero h1{font-size:clamp(3rem,13vw,4.5rem)}.hero-title{font-size:clamp(2rem,8.4vw,2.8rem);margin-top:12px}}
+@media(max-width:400px){.hero h1{font-size:clamp(2.55rem,12vw,3rem)}.hero-title{font-size:clamp(1.75rem,7.8vw,2.1rem)}}
+
+/* Dedicated AI section; core 3D tools remain listed separately. */
+.ai-creative{background:#151914;border-block:1px solid #ffffff12}
+.ai-creative .section-head{margin-bottom:34px}
+.ai-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px}
+.ai-tools-panel,.ai-capabilities{border:1px solid #ffffff18;background:linear-gradient(145deg,#ffffff08,transparent 70%),#10140f;padding:clamp(24px,4vw,42px)}
+.ai-overline{margin:0 0 22px;color:var(--accent);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase}
+.ai-tool-list{display:grid;gap:12px}
+.ai-tool-list span{border-bottom:1px solid #ffffff18;padding:0 0 12px;font-size:clamp(1.2rem,2.4vw,1.8rem);letter-spacing:-.035em}
+.ai-capabilities ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.ai-capabilities li{position:relative;padding:14px 0 14px 22px;border-top:1px solid #ffffff18;color:#e3e7df;font-size:.88rem;line-height:1.55}
+.ai-capabilities li:before{content:"";position:absolute;left:0;top:22px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+@media(max-width:760px){.ai-layout{grid-template-columns:1fr}.ai-capabilities ul{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.ai-capabilities ul{grid-template-columns:1fr}}
+
+/* Give empty character render slots an intentional preview treatment. */
+#work .project[href*="male-character-02"] .media,
+#work .project[href*="female-character-01"] .media{background:#141813;overflow:hidden}
+#work .project[href*="male-character-02"] .media img,
+#work .project[href*="female-character-01"] .media img{opacity:0}
+#work .project[href*="male-character-02"] .project-orbit-preview,
+#work .project[href*="female-character-01"] .project-orbit-preview{display:none!important}
+#work .project[href*="male-character-02"] .media:before,
+#work .project[href*="female-character-01"] .media:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 72% 32%,#d4e6a51a,transparent 34%),radial-gradient(ellipse at 25% 90%,#74836a24,transparent 45%),linear-gradient(135deg,#222920,#111510 64%,#1c211a)}
+#work .project[href*="male-character-02"] .media:after,
+#work .project[href*="female-character-01"] .media:after{position:absolute;inset:auto 24px 28px;white-space:pre-line;color:#f2f3ee;line-height:1.6;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
+#work .project[href*="male-character-02"] .media:after{content:"Character Study\A Male Character 02\A Render preview pending"}
+#work .project[href*="female-character-01"] .media:after{content:"Character Study\A Female Character 01\A Render preview pending"}
+@media(max-width:640px){#work .project[href*="male-character-02"] .media:after,#work .project[href*="female-character-01"] .media:after{inset:auto 18px 22px;font-size:.68rem}}
