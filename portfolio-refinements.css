@@ -81,16 +81,10 @@ html[data-motion="off"] dialog.project-dialog::backdrop{animation:none}
 @media(max-width:480px){.ai-capabilities ul{grid-template-columns:1fr}}
 
 /* Give empty character render slots an intentional preview treatment. */
-#work .project[href*="male-character-02"] .media,
 #work .project[href*="female-character-01"] .media{background:#141813;overflow:hidden}
-#work .project[href*="male-character-02"] .media img,
 #work .project[href*="female-character-01"] .media img{opacity:0}
-#work .project[href*="male-character-02"] .project-orbit-preview,
 #work .project[href*="female-character-01"] .project-orbit-preview{display:none!important}
-#work .project[href*="male-character-02"] .media:before,
 #work .project[href*="female-character-01"] .media:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 72% 32%,#d4e6a51a,transparent 34%),radial-gradient(ellipse at 25% 90%,#74836a24,transparent 45%),linear-gradient(135deg,#222920,#111510 64%,#1c211a)}
-#work .project[href*="male-character-02"] .media:after,
 #work .project[href*="female-character-01"] .media:after{position:absolute;inset:auto 24px 28px;white-space:pre-line;color:#f2f3ee;line-height:1.6;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
-#work .project[href*="male-character-02"] .media:after{content:"Character Study\A Male Character 02\A Render preview pending"}
 #work .project[href*="female-character-01"] .media:after{content:"Character Study\A Female Character 01\A Render preview pending"}
-@media(max-width:640px){#work .project[href*="male-character-02"] .media:after,#work .project[href*="female-character-01"] .media:after{inset:auto 18px 22px;font-size:.68rem}}
+@media(max-width:640px){#work .project[href*="female-character-01"] .media:after{inset:auto 18px 22px;font-size:.68rem}}

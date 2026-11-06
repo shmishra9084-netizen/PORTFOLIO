@@ -226,27 +226,27 @@
       "id": "male-character-02",
       "title": "Male Character 02",
       "category": "Characters",
-      "description": "Reserved gallery for male character 02. Renders will be added here.",
+      "description": "Stylized male character study shown across multiple views.",
       "layout": "half",
       "video": "",
       "images": [
         {
-          "src": "assets/projects/characters/male-02/render-01.png",
+          "src": "assets/projects/characters/male-02/render-01.jpg",
           "alt": "Male Character 02 — render slot 01",
           "label": "Render 01"
         },
         {
-          "src": "assets/projects/characters/male-02/render-02.png",
+          "src": "assets/projects/characters/male-02/render-02.jpg",
           "alt": "Male Character 02 — render slot 02",
           "label": "Render 02"
         },
         {
-          "src": "assets/projects/characters/male-02/render-03.png",
+          "src": "assets/projects/characters/male-02/render-03.jpg",
           "alt": "Male Character 02 — render slot 03",
           "label": "Render 03"
         },
         {
-          "src": "assets/projects/characters/male-02/render-04.png",
+          "src": "assets/projects/characters/male-02/render-04.jpg",
           "alt": "Male Character 02 — render slot 04",
           "label": "Render 04"
         }
